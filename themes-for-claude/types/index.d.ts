@@ -10,6 +10,6 @@ export type Prefs = {
 
 declare module 'claude-code' {
   interface PluginState {
-    'ascii-desk-themes': { prefs: Shaped<Prefs> }
+    'themes-for-claude': { prefs: Shaped<Prefs> }
   }
 }

@@ -1,4 +1,4 @@
-# ascii-desk-themes (plugin cho Claude Code)
+# themes-for-claude (plugin cho Claude Code)
 
 Khung cảnh ASCII chuyển động cho **tab Code trong app Claude Desktop**. Plugin cũng chạy trong VS Code và trên điện thoại khi bạn xem một phiên Claude Code. Có chín theme giống bản cho claude.ai: Terminal Glow, Blue Sky, Turtle Bay, Lotus Koi, Deep Glow, Paper Fleet, Night Forest, Starry Night, Việt Nam.
 
@@ -10,11 +10,11 @@ Plugin vẽ ở ba chỗ:
 
 ## Cài đặt
 
-1. Trong tab **Code**, bấm **+** cạnh ô chat → **Plugins** → **Add marketplace**, nhập `nambuibtt/ascii-desk-themes`.
-2. Chọn **ascii-desk-themes** → **Add plugin**.
+1. Trong tab **Code**, bấm **+** cạnh ô chat → **Plugins** → **Add marketplace**, nhập `nambuibtt/claude-themes`.
+2. Chọn **themes-for-claude** → **Add plugin**.
 3. Mở phiên mới và gõ `/desk`.
 
-Bằng terminal: `claude plugin install ascii-desk-themes --marketplace nambuibtt/ascii-desk-themes`.
+Bằng terminal: `claude plugin install themes-for-claude --marketplace nambuibtt/claude-themes`.
 
 ## Lệnh
 

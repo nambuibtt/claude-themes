@@ -1,21 +1,21 @@
 // ==UserScript==
-// @name         ASCII Desk Themes
-// @name:vi      ASCII Desk Themes – khung cảnh ASCII cho claude.ai
-// @namespace    https://github.com/nambuibtt/ascii-desk-themes
+// @name         Claude Themes
+// @name:vi      Claude Themes – khung cảnh ASCII cho claude.ai
+// @namespace    https://github.com/nambuibtt/claude-themes
 // @version      1.0.0
-// @description  Animated ASCII scenery behind the claude.ai chat. Type /theme to pick one.
+// @description  Claude themes: animated background wallpapers behind the claude.ai chat. Type /theme to pick one.
 // @description:vi Khung cảnh ASCII chuyển động phía sau khung chat claude.ai. Gõ /theme để chọn.
 // @author       Nam Bui
 // @license      MIT
-// @homepageURL  https://github.com/nambuibtt/ascii-desk-themes
-// @supportURL   https://github.com/nambuibtt/ascii-desk-themes/issues
+// @homepageURL  https://github.com/nambuibtt/claude-themes
+// @supportURL   https://github.com/nambuibtt/claude-themes/issues
 // @match        https://claude.ai/*
 // @grant        none
 // @run-at       document-idle
 // @inject-into  content
 // @noframes
-// @updateURL    https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js
-// @downloadURL  https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js
+// @updateURL    https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js
+// @downloadURL  https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js
 // ==/UserScript==
 
 /*
@@ -36,8 +36,8 @@
   'use strict';
   // A clear line in the console, so a run from DevTools shows it worked.
   const say = (text) => console.info('%c' + text, 'color:#2f8a58;font-weight:bold');
-  if (window.__asciiDeskThemes) {
-    say('ASCII Desk đang chạy rồi. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
+  if (window.__claudeThemes) {
+    say('Claude Themes đang chạy rồi. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
     return;
   }
 
@@ -1154,7 +1154,7 @@
 
   /* --------------------------------------------------------------- settings */
 
-  const KEY = 'ascii-desk-themes:v1';
+  const KEY = 'claude-themes:v1';
   const cfg = { theme: 'cloud', veil: 0.2, glass: 0.72, motion: true, button: true };
   try {
     Object.assign(cfg, JSON.parse(localStorage.getItem(KEY) || '{}'));
@@ -1616,7 +1616,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
 
     fab = h(
       'button',
-      { class: 'fab', type: 'button', title: 'ASCII Desk  (/theme · Alt+T)', 'aria-label': 'Đổi khung cảnh ASCII', onclick: () => (open ? closePicker(false) : openPicker(null, false)) },
+      { class: 'fab', type: 'button', title: 'Claude Themes  (/theme · Alt+T)', 'aria-label': 'Đổi khung cảnh ASCII', onclick: () => (open ? closePicker(false) : openPicker(null, false)) },
       FAB_COLORS.map((c) => {
         const i = h('i');
         i.style.setProperty('background', c);
@@ -1692,7 +1692,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
 
     note = h('div', { class: 'note', hidden: true });
     panel.append(
-      h('div', { class: 'hd' }, h('span', { class: 'cmd' }, '/theme'), h('span', { class: 'ttl' }, 'ASCII Desk'), h('span', { class: 'hint' }, '← → chọn · ↵ áp dụng · esc đóng')),
+      h('div', { class: 'hd' }, h('span', { class: 'cmd' }, '/theme'), h('span', { class: 'ttl' }, 'Claude Themes'), h('span', { class: 'hint' }, '← → chọn · ↵ áp dụng · esc đóng')),
       note,
       list,
       h(
@@ -1908,7 +1908,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
 
   /* ------------------------------------------------------------------- boot */
 
-  window.__asciiDeskThemes = {
+  window.__claudeThemes = {
     themes: ITEMS.slice(),
     get current() {
       return cfg.theme;
@@ -1931,7 +1931,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
     sheet(PAGE_CSS, document);
     buildUI();
     applyTheme(cfg.theme);
-    say('✅ ASCII Desk đã chạy. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
+    say('✅ Claude Themes đã chạy. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
   }
 
   boot();

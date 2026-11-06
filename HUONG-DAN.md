@@ -1,4 +1,4 @@
-# Hướng dẫn cài ASCII Desk Themes
+# Hướng dẫn cài Claude Themes
 
 Viết cho người chưa từng làm việc này bao giờ. Cứ đi từ trên xuống, mỗi bước một việc.
 
@@ -38,9 +38,9 @@ Muốn tự bật mỗi lần mà vẫn có cửa sổ riêng như app? Mở cla
 
 | Dùng cho | Link |
 |---|---|
-| Script (trình duyệt, điện thoại, DevTools) | https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js |
-| Trang cài đặt từng bước cho app Desktop | https://nambuibtt.github.io/ascii-desk-themes/setup.html |
-| Tên marketplace của plugin | `nambuibtt/ascii-desk-themes` |
+| Script (trình duyệt, điện thoại, DevTools) | https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js |
+| Trang cài đặt từng bước cho app Desktop | https://nambuibtt.github.io/claude-themes/setup.html |
+| Tên marketplace của plugin | `nambuibtt/claude-themes` |
 
 ---
 
@@ -48,7 +48,7 @@ Muốn tự bật mỗi lần mà vẫn có cửa sổ riêng như app? Mở cla
 
 Cách này dùng **Developer Mode**, chế độ gỡ lỗi có sẵn trong app. Bạn mở DevTools rồi chạy script trong đó.
 
-> Muốn có nút sao chép script sẵn thì dùng [trang cài đặt từng bước](https://nambuibtt.github.io/ascii-desk-themes/setup.html), nội dung giống mục này.
+> Muốn có nút sao chép script sẵn thì dùng [trang cài đặt từng bước](https://nambuibtt.github.io/claude-themes/setup.html), nội dung giống mục này.
 
 > Khung cảnh ở lại tới khi bạn tắt app hoặc tải lại trang. Lần sau mở app, làm [bước 3.5](#35-những-lần-mở-app-sau). Theme đã chọn được nhớ.
 
@@ -85,7 +85,7 @@ Nếu hiện hai cửa sổ DevTools, vào tab **Console** của từng cửa s�
    - **Gõ tay** `allow pasting` vào dòng `>` rồi Enter. Chữ này không dán được.
    - Dán script lại. Chỉ cần làm việc này lần đầu.
    - Hiện dòng đỏ `SyntaxError` sau khi gõ là bình thường.
-5. Bấm **Enter**. Console hiện dòng xanh "✅ ASCII Desk đã chạy…", khung cảnh hiện sau cuộc trò chuyện và có nút ô vuông nhiều màu ở cạnh phải.
+5. Bấm **Enter**. Console hiện dòng xanh "✅ Claude Themes đã chạy…", khung cảnh hiện sau cuộc trò chuyện và có nút ô vuông nhiều màu ở cạnh phải.
 6. Đóng DevTools được rồi, khung cảnh vẫn ở lại.
 
 ### 3.4. Lưu script để lần sau nhanh hơn (làm 1 lần)
@@ -133,11 +133,11 @@ Cài một lần là tự chạy. Plugin chỉ vẽ ở dải trên ô chat, khu
 ### 4.1. Cài
 
 1. Trong tab **Code**, bấm **+** cạnh ô chat → **Plugins** → **Add marketplace**.
-2. Ô URL ghi đúng `nambuibtt/ascii-desk-themes` (không dán link trang web), bấm **Sync**.
-3. Chọn **ascii-desk-themes** → **Add plugin**.
+2. Ô URL ghi đúng `nambuibtt/claude-themes` (không dán link trang web), bấm **Sync**.
+3. Chọn **themes-for-claude** → **Add plugin**.
 4. Mở phiên Code mới, gõ `/desk`.
 
-Trong terminal: `claude plugin install ascii-desk-themes --marketplace nambuibtt/ascii-desk-themes`.
+Trong terminal: `claude plugin install themes-for-claude --marketplace nambuibtt/claude-themes`.
 
 ### 4.2. Lệnh
 
@@ -154,7 +154,7 @@ Trong terminal: `claude plugin install ascii-desk-themes --marketplace nambuibtt
 
 ### 4.3. Cập nhật
 
-**+** → **Plugins** → chọn marketplace `nambuibtt/ascii-desk-themes` → **Sync** hoặc **Update**, rồi mở phiên Code mới.
+**+** → **Plugins** → chọn marketplace `nambuibtt/claude-themes` → **Sync** hoặc **Update**, rồi mở phiên Code mới.
 
 ---
 
@@ -202,17 +202,17 @@ Tampermonkey tự cập nhật script khi có bản mới.
 | Không dán được, gõ `allow pasting` cũng không ăn | Chuyển bộ gõ sang tiếng Anh, gõ tay (đừng dán), gõ vào dòng `>` của Console chứ không phải ô chat. |
 | Chạy xong không thấy gì | Trong Console, bấm ô chọn phía trên (thường ghi `top`), chọn mục có chữ claude, rồi chạy lại. |
 | Chữ khó đọc | Kéo **Làm dịu nền** sang phải, hoặc chọn theme hợp với giao diện sáng / tối. |
-| Có chỗ vẫn nền đặc | Có thể do Claude vừa đổi giao diện. Chụp màn hình và [mở issue](https://github.com/nambuibtt/ascii-desk-themes/issues). |
+| Có chỗ vẫn nền đặc | Có thể do Claude vừa đổi giao diện. Chụp màn hình và [mở issue](https://github.com/nambuibtt/claude-themes/issues). |
 | Mở lại app thì mất khung cảnh | Bình thường với mục 3. Làm bước 3.5. |
 | Gõ `/desk` không có lệnh | Mở phiên Code mới. Vẫn không có thì cập nhật app rồi cài lại plugin. |
-| Add marketplace báo *"isn't a marketplace"* | Ô URL phải ghi `nambuibtt/ascii-desk-themes`, không phải link trang GitHub. |
+| Add marketplace báo *"isn't a marketplace"* | Ô URL phải ghi `nambuibtt/claude-themes`, không phải link trang GitHub. |
 
 ---
 
 ## 8. Gỡ bỏ
 
 - **Mục 3:** chọn **Tắt** trong bảng chọn, hoặc tắt và mở lại app. Tắt Developer Mode ở **Help → Troubleshooting**.
-- **Plugin `/desk`:** tab Code → **+** → **Plugins** → **ascii-desk-themes** → **Remove**.
-- **Trình duyệt / điện thoại:** xoá script *ASCII Desk Themes* trong Tampermonkey / Userscripts / Violentmonkey.
+- **Plugin `/desk`:** tab Code → **+** → **Plugins** → **themes-for-claude** → **Remove**.
+- **Trình duyệt / điện thoại:** xoá script *Claude Themes* trong Tampermonkey / Userscripts / Violentmonkey.
 
-Script chỉ lưu lựa chọn theme trên máy bạn và không gửi dữ liệu đi đâu. Gặp lỗi hoặc muốn góp ý, mở [issue trên GitHub](https://github.com/nambuibtt/ascii-desk-themes/issues).
+Script chỉ lưu lựa chọn theme trên máy bạn và không gửi dữ liệu đi đâu. Gặp lỗi hoặc muốn góp ý, mở [issue trên GitHub](https://github.com/nambuibtt/claude-themes/issues).

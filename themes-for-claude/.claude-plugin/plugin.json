@@ -1,0 +1,12 @@
+{
+  "name": "themes-for-claude",
+  "version": "1.0.0",
+  "description": "Claude themes for the Claude Code tab: animated ASCII background, moving strip over the prompt, a tall side pane and colour-matched message frames. Type /desk.",
+  "author": {
+    "name": "nambuibtt"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/nambuibtt/claude-themes",
+  "repository": "https://github.com/nambuibtt/claude-themes",
+  "types": "./types/index.d.ts"
+}

@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-const PLUGIN = 'ascii-desk-themes'
+const PLUGIN = 'themes-for-claude'
 const SURFACES = ['terminal', 'desktop', 'vscode', 'mobile'] as const
 type Surface = (typeof SURFACES)[number]
 

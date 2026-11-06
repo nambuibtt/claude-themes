@@ -7,7 +7,7 @@ import { THEMES, byId, findTheme, scene } from './scenes'
 const DEFAULTS: Prefs = { theme: 'cloud', band: true, tint: true }
 const STORE_KEY = 'prefs'
 // Change the tag when Prefs changes: it declines what an earlier version kept.
-const prefs = atom({ plugin: 'ascii-desk-themes', key: 'prefs' } as const, DEFAULTS, { shape: 'prefs-1' })
+const prefs = atom({ plugin: 'themes-for-claude', key: 'prefs' } as const, DEFAULTS, { shape: 'prefs-1' })
 
 const PICKER = 'desk-picker'
 const SIDE = 'desk-scene'
@@ -49,7 +49,7 @@ export const register: Register = on => {
     const word = arg.toLowerCase()
 
     if (!arg) {
-      await $.ui.open({ id: PICKER, title: 'ASCII Desk', focus: true, closeOnEscape: true })
+      await $.ui.open({ id: PICKER, title: 'Claude Themes', focus: true, closeOnEscape: true })
       return { text: 'Đã mở bảng chọn khung cảnh ASCII.' }
     }
     if (word === 'side') {

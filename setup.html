@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cài ASCII Desk</title>
+<title>Claude Themes · cài theme hình nền cho app Claude Desktop</title>
 <meta name="description" content="Trợ lý 6 bước để bật khung cảnh ASCII nguyên màn hình trong app Claude Desktop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -159,9 +159,9 @@
 <body>
 <div class="wrap">
   <header>
-    <span class="eyebrow">ASCII Desk · app Claude Desktop</span>
+    <span class="eyebrow">Claude Themes · app Claude Desktop</span>
     <h1>Khung cảnh ASCII nguyên màn hình trong app Claude</h1>
-    <p class="other">Dùng claude.ai trên trình duyệt hoặc điện thoại? Cách đó tự động hơn: xem <a href="https://github.com/nambuibtt/ascii-desk-themes/blob/main/HUONG-DAN.md">hướng dẫn đầy đủ</a>.</p>
+    <p class="other">Dùng claude.ai trên trình duyệt hoặc điện thoại? Cách đó tự động hơn: xem <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">hướng dẫn đầy đủ</a>.</p>
     <p class="lead">Làm lần lượt 6 bước. Mỗi bước xong thì tick vào ô bên dưới. Lần đầu mất khoảng 2 phút; những lần sau chỉ còn 3 phím.</p>
     <div class="bar">
       <div class="seg" role="group" aria-label="Hệ điều hành">
@@ -240,7 +240,7 @@
     <li class="step" data-step="5">
       <div class="body">
         <h2>Nhấn Enter</h2>
-        <p>Console hiện dòng chữ xanh <b>“✅ ASCII Desk đã chạy…”</b>. Hình nền chuyển động hiện ra phía sau khung chat, và có thêm nút ô vuông nhiều màu ở cạnh phải. Bạn có thể đóng DevTools, hình nền vẫn ở lại.</p>
+        <p>Console hiện dòng chữ xanh <b>“✅ Claude Themes đã chạy…”</b>. Hình nền chuyển động hiện ra phía sau khung chat, và có thêm nút ô vuông nhiều màu ở cạnh phải. Bạn có thể đóng DevTools, hình nền vẫn ở lại.</p>
         <p class="note">Có dòng xanh nhưng không thấy hình nền? Có thể bạn đang ở DevTools của trình duyệt (xem lại bước 2). Hoặc ở tab Console, bấm ô chọn phía trên (thường ghi <code>top</code>), chọn mục có chữ <b>claude</b>, rồi làm lại bước 4.</p>
         <label class="check"><input type="checkbox" id="done-5"> Đã xong</label>
       </div>
@@ -288,7 +288,7 @@
   </section>
 
   <footer>
-    Mã nguồn và hướng dẫn đầy đủ: <a href="https://github.com/nambuibtt/ascii-desk-themes/blob/main/HUONG-DAN.md">HUONG-DAN.md trên GitHub</a>. Script chỉ lưu lựa chọn theme trên máy bạn và không gửi dữ liệu đi đâu.
+    Mã nguồn và hướng dẫn đầy đủ: <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">HUONG-DAN.md trên GitHub</a>. Script chỉ lưu lựa chọn theme trên máy bạn và không gửi dữ liệu đi đâu.
   </footer>
 </div>
 
@@ -334,12 +334,12 @@
       } catch (e) { fail(); }
     }
     // The script is read from the copy published beside this page, so the page always hands out the latest version.
-    var RAW = 'https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js';
+    var RAW = 'https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js';
     var script = '';
     var copyBtn = document.getElementById('copy-script');
     copyBtn.disabled = true;
     copyBtn.textContent = 'Đang tải script…';
-    fetch('ascii-desk-themes.user.js', { cache: 'no-cache' })
+    fetch('claude-themes.user.js', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
       .then(function (t) { script = t; copyBtn.disabled = false; copyBtn.textContent = 'Sao chép script hình nền'; })
       .catch(function () {

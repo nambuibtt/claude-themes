@@ -1,4 +1,8 @@
-# ASCII Desk Themes
+# Claude Themes
+
+**Theme và hình nền động cho Claude**, dùng được trên claude.ai, app Claude Desktop và tab Code của Claude Code. Đổi giao diện Claude, thêm background chuyển động phía sau khung chat, chọn theme sáng hoặc tối chỉ bằng một lệnh.
+
+*Claude theme · Claude background · Claude wallpaper · hình nền Claude · đổi giao diện Claude · Claude chat theme · Claude Desktop theme · Claude Code theme*
 
 Biến khung chat của Claude thành một khung cảnh ASCII chuyển động. Có sẵn chín cảnh: bầu trời xanh, vịnh rùa biển, hồ sen cá koi, biển sâu phát sáng, đoàn thuyền giấy, rừng đêm, trời sao, terminal phát sáng và cờ Việt Nam. Miễn phí, mã nguồn mở, không gửi dữ liệu đi đâu.
 
@@ -6,11 +10,11 @@ Biến khung chat của Claude thành một khung cảnh ASCII chuyển động.
 
 | Bạn dùng Claude ở đâu | Làm gì | Kết quả |
 |---|---|---|
-| claude.ai trên trình duyệt máy tính | Cài [Tampermonkey](https://www.tampermonkey.net/), rồi mở [link script](https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js) và bấm **Install** | Hình nền phủ kín, tự bật mỗi lần mở |
+| claude.ai trên trình duyệt máy tính | Cài [Tampermonkey](https://www.tampermonkey.net/), rồi mở [link script](https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js) và bấm **Install** | Hình nền phủ kín, tự bật mỗi lần mở |
 | claude.ai trên iPhone / iPad | Cài app **Userscripts** cho Safari, rồi mở link script ở trên | Như trên |
 | claude.ai trên Android | Cài **Violentmonkey** trong Firefox, rồi mở link script | Như trên |
-| App Claude Desktop, tab **Code** | **+** → **Plugins** → **Add marketplace** → `nambuibtt/ascii-desk-themes` → cài **ascii-desk-themes** → gõ `/desk` | Dải cảnh trên ô chat, khung cảnh bên cạnh, viền tin nhắn theo màu theme |
-| App Claude Desktop, phủ kín cửa sổ | Làm theo [trang cài đặt từng bước](https://nambuibtt.github.io/ascii-desk-themes/setup.html) | Phủ kín cửa sổ, phải dán lại script mỗi lần mở app |
+| App Claude Desktop, tab **Code** | **+** → **Plugins** → **Add marketplace** → `nambuibtt/claude-themes` → cài **themes-for-claude** → gõ `/desk` | Dải cảnh trên ô chat, khung cảnh bên cạnh, viền tin nhắn theo màu theme |
+| App Claude Desktop, phủ kín cửa sổ | Làm theo [trang cài đặt từng bước](https://nambuibtt.github.io/claude-themes/setup.html) | Phủ kín cửa sổ, phải dán lại script mỗi lần mở app |
 
 Hướng dẫn chi tiết cho người mới, có phần xử lý sự cố: [HUONG-DAN.md](HUONG-DAN.md).
 
@@ -61,7 +65,7 @@ Theme tối (Lotus Koi, Deep Glow, Night Forest, Starry Night, Terminal Glow) h�
 - Script đọc màu nền thực tế của từng vùng trên trang. Vùng lớn được làm trong suốt, vùng nhỏ (thanh bên, ô chat, tin nhắn, menu) được phủ kính mờ, còn nút có màu nổi như nút gửi thì giữ nguyên. Vì không dựa vào tên class, script vẫn chạy khi claude.ai đổi giao diện.
 - Không dùng `innerHTML` hay `<style>` nội tuyến, nên chạy được trên trang có Content-Security-Policy chặt.
 - Vẽ khoảng 10–12 khung hình mỗi giây, tự dừng khi chuyển tab, và đứng yên nếu máy bật giảm chuyển động.
-- Chỉ lưu lựa chọn của bạn vào localStorage (khoá `ascii-desk-themes:v1`). Không gửi gì ra ngoài.
+- Chỉ lưu lựa chọn của bạn vào localStorage (khoá `claude-themes:v1`). Không gửi gì ra ngoài.
 
 ## Thêm theme của riêng bạn
 
@@ -88,26 +92,26 @@ Hàm vẽ có sẵn: `world.tile`, `world.sprite`, `world.glyph`, `world.dot`, `
 
 ## Plugin cho tab Code
 
-Thư mục [`ascii-desk-themes/`](ascii-desk-themes/) là plugin cho Claude Code. Plugin chỉ được vẽ ở dải trên ô chat, khung bên cạnh và quanh tin nhắn, nên không phủ kín được như bản trên web. Chi tiết ở [ascii-desk-themes/README.md](ascii-desk-themes/README.md).
+Thư mục [`themes-for-claude/`](themes-for-claude/) là plugin cho Claude Code. Plugin chỉ được vẽ ở dải trên ô chat, khung bên cạnh và quanh tin nhắn, nên không phủ kín được như bản trên web. Chi tiết ở [themes-for-claude/README.md](themes-for-claude/README.md).
 
 ## Cấu trúc thư mục
 
 ```
-ascii-desk-themes.user.js   userscript chạy trực tiếp trên claude.ai
+claude-themes.user.js   userscript chạy trực tiếp trên claude.ai
 setup.html                  trang cài đặt từng bước cho app Desktop
 HUONG-DAN.md                hướng dẫn chi tiết
-ascii-desk-themes/          plugin cho tab Code
+themes-for-claude/      plugin cho tab Code
 .claude-plugin/             marketplace để app Desktop cài plugin từ repo này
 ```
 
 ## Giới hạn
 
-- Nếu claude.ai đổi giao diện lớn, có thể còn vùng chưa được làm trong suốt. Khi đó chọn **Tắt** trong bảng chọn và [mở issue](https://github.com/nambuibtt/ascii-desk-themes/issues).
+- Nếu claude.ai đổi giao diện lớn, có thể còn vùng chưa được làm trong suốt. Khi đó chọn **Tắt** trong bảng chọn và [mở issue](https://github.com/nambuibtt/claude-themes/issues).
 - Hiệu ứng kính mờ tốn GPU hơn một chút trên máy yếu. Kéo **Độ đục khung** lên tối đa để tắt nó.
 
 ## Đóng góp
 
-Muốn thêm theme hay gặp lỗi? Mở [issue](https://github.com/nambuibtt/ascii-desk-themes/issues) kèm ảnh chụp màn hình và cho biết bạn dùng trình duyệt hay app nào. Pull request luôn được chào đón.
+Muốn thêm theme hay gặp lỗi? Mở [issue](https://github.com/nambuibtt/claude-themes/issues) kèm ảnh chụp màn hình và cho biết bạn dùng trình duyệt hay app nào. Pull request luôn được chào đón.
 
 ## Giấy phép
 
@@ -118,11 +122,11 @@ Muốn thêm theme hay gặp lỗi? Mở [issue](https://github.com/nambuibtt/as
 <details>
 <summary><b>English</b></summary>
 
-**ASCII Desk Themes** puts an animated ASCII scene behind the Claude chat. Nine scenes ship with it: blue sky, turtle bay, lotus koi pond, deep-sea glow, paper fleet, night forest, starry night, terminal glow and the Vietnamese flag.
+**Claude Themes** puts an animated ASCII scene behind the Claude chat. Nine scenes ship with it: blue sky, turtle bay, lotus koi pond, deep-sea glow, paper fleet, night forest, starry night, terminal glow and the Vietnamese flag.
 
-- **claude.ai in a browser** (desktop, iPhone Safari, Android Firefox): install a userscript manager, then open the [script link](https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js). Type `/theme` or press `Alt+T`.
-- **Claude Desktop, Code tab**: **+** → **Plugins** → **Add marketplace** `nambuibtt/ascii-desk-themes` → install **ascii-desk-themes**, then type `/desk`.
-- **Claude Desktop, full window**: turn on *Help → Troubleshooting → Enable Developer Mode*, open DevTools (`Cmd+Option+I` / `Ctrl+Alt+I`) and paste the script into the Console. It lasts until the app restarts. See the [setup page](https://nambuibtt.github.io/ascii-desk-themes/setup.html).
+- **claude.ai in a browser** (desktop, iPhone Safari, Android Firefox): install a userscript manager, then open the [script link](https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js). Type `/theme` or press `Alt+T`.
+- **Claude Desktop, Code tab**: **+** → **Plugins** → **Add marketplace** `nambuibtt/claude-themes` → install **themes-for-claude**, then type `/desk`.
+- **Claude Desktop, full window**: turn on *Help → Troubleshooting → Enable Developer Mode*, open DevTools (`Cmd+Option+I` / `Ctrl+Alt+I`) and paste the script into the Console. It lasts until the app restarts. See the [setup page](https://nambuibtt.github.io/claude-themes/setup.html).
 
 MIT licensed.
 
