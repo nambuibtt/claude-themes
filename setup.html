@@ -3,368 +3,563 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Claude Themes · cài theme hình nền cho app Claude Desktop</title>
-<meta name="description" content="Trợ lý 6 bước để bật khung cảnh ASCII nguyên màn hình trong app Claude Desktop.">
+<title>Claude Themes · Hình nền động cho app Claude</title>
+<meta name="description" content="Thêm hình nền chuyển động cho app Claude Desktop trong khoảng 2 phút. Không cần biết lập trình, miễn phí, không gửi dữ liệu đi đâu.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-  /* Layout: one narrow column of numbered steps (a real sequence), each a card you tick off; the copy button is the one loud element. */
+  /* Layout: a hero with a live demo, a theme gallery, then the install steps beside a sticky progress rail (stacked on phones), then answers to common questions. */
   :root {
-    --bg: #eef3f1;
+    --bg: #f6f5f2;
     --surface: #ffffff;
-    --ink: #13201d;
-    --muted: #5b6b67;
-    --line: #d5e0dc;
-    --accent: #d9612a;
+    --surface-2: #f0eeea;
+    --ink: #1b1a17;
+    --muted: #66625a;
+    --line: #e3e0d9;
+    --accent: #4f46e5;
     --accent-ink: #ffffff;
-    --pond: #0f5e5a;
-    --done: #2f8a58;
-    --key: #f6f8f7;
-    --key-edge: #b9c8c3;
-    --font-display: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
-    --font-body: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --accent-soft: #eceafe;
+    --ok: #15803d;
+    --ok-soft: #e6f4ea;
+    --warn: #b45309;
+    --warn-soft: #fdf3e2;
+    --shadow: 0 1px 2px rgba(27, 26, 23, .05), 0 8px 24px rgba(27, 26, 23, .06);
+    --radius: 16px;
+    --font: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0d1513;
-      --surface: #16211f;
-      --ink: #e7efec;
-      --muted: #97a8a3;
-      --line: #263532;
-      --accent: #ff8a55;
-      --accent-ink: #1b0d05;
-      --pond: #7fd8c9;
-      --done: #6fd08c;
-      --key: #1f2c29;
-      --key-edge: #3a4d48;
+      --bg: #121214;
+      --surface: #1b1b1f;
+      --surface-2: #232328;
+      --ink: #ecebe8;
+      --muted: #a3a09a;
+      --line: #2e2e34;
+      --accent: #8b85ff;
+      --accent-ink: #110f2a;
+      --accent-soft: #24223f;
+      --ok: #4ade80;
+      --ok-soft: #15291c;
+      --warn: #fbbf24;
+      --warn-soft: #2d2412;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0d1513;
-    --surface: #16211f;
-    --ink: #e7efec;
-    --muted: #97a8a3;
-    --line: #263532;
-    --accent: #ff8a55;
-    --accent-ink: #1b0d05;
-    --pond: #7fd8c9;
-    --done: #6fd08c;
-    --key: #1f2c29;
-    --key-edge: #3a4d48;
+    --bg: #121214;
+    --surface: #1b1b1f;
+    --surface-2: #232328;
+    --ink: #ecebe8;
+    --muted: #a3a09a;
+    --line: #2e2e34;
+    --accent: #8b85ff;
+    --accent-ink: #110f2a;
+    --accent-soft: #24223f;
+    --ok: #4ade80;
+    --ok-soft: #15291c;
+    --warn: #fbbf24;
+    --warn-soft: #2d2412;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font: 400 16px/1.6 var(--font-body);
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 28px 56px;
+    font: 400 16px/1.65 var(--font);
+    -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
 
-  header { display: flex; flex-direction: column; gap: 10px; }
-  .eyebrow { font: 700 12px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--pond); }
-  h1 { margin: 0; font: 800 clamp(26px, 5vw, 34px)/1.15 var(--font-display); text-wrap: balance; }
-  .lead { margin: 0; color: var(--muted); max-width: 62ch; }
+  /* Top bar */
+  .top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); text-decoration: none; }
+  .logo { display: grid; grid-template-columns: repeat(3, 6px); gap: 2px; }
+  .logo i { width: 6px; height: 6px; border-radius: 1.5px; }
+  .seg { display: inline-flex; padding: 3px; background: var(--surface-2); border-radius: 999px; border: 1px solid var(--line); }
+  .seg button { border: 0; background: none; color: var(--muted); font: 600 14px/1 var(--font); padding: 0 14px; min-height: 34px; border-radius: 999px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 
-  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
-  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); }
-  .seg button {
-    border: 0; background: none; color: var(--muted); font: 500 14px/1 var(--font-body);
-    padding: 8px 14px; border-radius: 999px; cursor: pointer; min-height: 36px;
-  }
-  .seg button[aria-pressed="true"] { background: var(--pond); color: var(--surface); }
-  .progress { font: 500 14px/1 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
-
-  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; counter-reset: step; }
-  .step {
-    counter-increment: step;
-    display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 14px;
-    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
-  }
-  .step::before {
-    content: counter(step);
-    align-self: start;
-    width: 36px; height: 36px; border-radius: 50%;
-    display: grid; place-items: center;
-    font: 700 16px/1 var(--font-mono);
-    background: var(--bg); color: var(--pond); border: 1px solid var(--line);
-  }
-  .step.done::before { content: "✓"; background: var(--done); color: var(--surface); border-color: var(--done); }
-  .step.done { opacity: .72; }
-  .step h2 { margin: 4px 0 2px; font: 700 18px/1.3 var(--font-display); text-wrap: balance; }
-  .step p, .step ul { margin: 0; color: var(--ink); }
-  .step ul { padding-left: 18px; }
-  .step .note { color: var(--muted); font-size: 14px; }
-  .step .body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); cursor: pointer; margin-top: 6px; width: fit-content; }
-  .check input { width: 18px; height: 18px; accent-color: var(--done); }
-
-  kbd {
-    display: inline-block; min-width: 1.9em; padding: 2px 7px; margin: 0 1px;
-    font: 700 13px/1.4 var(--font-mono); text-align: center;
-    background: var(--key); color: var(--ink);
-    border: 1px solid var(--key-edge); border-bottom-width: 3px; border-radius: 6px;
-  }
-  code { font: 500 14px/1.4 var(--font-mono); background: var(--key); padding: 1px 6px; border-radius: 5px; }
-  .path { font-weight: 700; }
-  .path span { color: var(--muted); font-weight: 400; padding: 0 4px; }
-
-  .copy {
+  /* Hero */
+  .hero { padding-block: 56px 32px; display: grid; gap: 20px; }
+  .pill { display: inline-flex; width: fit-content; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 600; }
+  h1 { margin: 0; font-size: clamp(32px, 6vw, 52px); line-height: 1.08; letter-spacing: -.02em; font-weight: 800; max-width: 18ch; text-wrap: balance; }
+  .lead { margin: 0; font-size: clamp(17px, 2.2vw, 19px); color: var(--muted); max-width: 56ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 48px; padding: 12px 20px; border: 0; border-radius: 12px; cursor: pointer;
-    background: var(--accent); color: var(--accent-ink); font: 700 16px/1 var(--font-display);
-    width: fit-content; max-width: 100%;
+    min-height: 48px; padding: 0 22px; border-radius: 12px; border: 1px solid transparent;
+    font: 700 16px/1 var(--font); text-decoration: none; cursor: pointer;
   }
-  .copy.small { min-height: 36px; padding: 8px 12px; font-size: 14px; background: var(--pond); color: var(--surface); }
-  .copy:focus-visible, .seg button:focus-visible, .check input:focus-visible, .reset:focus-visible { outline: 3px solid var(--pond); outline-offset: 2px; }
-  .status { font-size: 14px; color: var(--done); min-height: 1.4em; }
-  .fallback { display: flex; flex-direction: column; gap: 6px; }
-  .fallback textarea {
-    width: 100%; height: 120px; resize: vertical; font: 12px/1.4 var(--font-mono);
-    background: var(--key); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px;
-  }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+  .btn:disabled { opacity: .55; cursor: progress; }
+  .btn:focus-visible, .seg button:focus-visible, .rail a:focus-visible, .tick:focus-visible, summary:focus-visible, .theme:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 4px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; }
+  .facts li::before { content: "✓"; color: var(--ok); font-weight: 700; margin-right: 6px; }
 
-  .step .warn { font-size: 14px; font-weight: 700; color: var(--ink); }
-  .fixpaste { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); }
-  .fixpaste p, .fixpaste ol { margin: 0; font-size: 14px; }
-  .fixpaste ol { padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
-  .step .warn::before { content: "Lưu ý: "; color: var(--accent); }
+  /* Theme gallery */
+  .gallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding-bottom: 8px; }
+  .theme { display: flex; flex-direction: column; gap: 10px; padding: 0; border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius); overflow: hidden; text-align: left; font: inherit; color: inherit; cursor: default; box-shadow: var(--shadow); }
+  .live .theme { cursor: pointer; }
+  .live .theme:hover { border-color: var(--accent); }
+  .theme .art { aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
+  .theme .txt { padding: 0 14px 14px; display: grid; gap: 2px; }
+  .theme b { font-size: 15px; }
+  .theme span { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .theme.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+  /* Little CSS paintings of each scene. */
+  .art.beaver { background: linear-gradient(#ffd3e6 0 70%, #8fd3e6 70%); }
+  .art.beaver::before { content: ""; position: absolute; left: 50%; bottom: 26%; width: 36%; aspect-ratio: 1.15; transform: translateX(-50%); background: #ff9ec4; border-radius: 40% 40% 30% 30%; box-shadow: inset 0 -4px 0 #f07aa8; }
+  .art.beaver::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 22%; height: 8%; background: #b47a4c; border-radius: 4px; }
+  .art.bunny { background: radial-gradient(circle at 50% 100%, transparent 34%, #a55cf0 34% 37%, #5d63ef 37% 40%, #4aa8ff 40% 43%, #62cf5c 43% 46%, #ffd93d 46% 49%, #ff9d3c 49% 52%, #ff5a5a 52% 55%, transparent 55%), linear-gradient(#9fd4f8 0 75%, #8bd56a 75%); }
+  .art.bunny::before { content: ""; position: absolute; left: 50%; bottom: 18%; width: 22%; aspect-ratio: 1; transform: translateX(-50%); background: #fff; border-radius: 50%; box-shadow: -10% 0 0 #fff; }
+  .art.namsan { background: radial-gradient(circle at 25% 22%, #fff4d6 0 6%, transparent 7%), linear-gradient(#0b1030, #2c2160 70%, #5a2f6b); }
+  .art.namsan::before { content: ""; position: absolute; left: 50%; bottom: 20%; width: 3%; height: 46%; transform: translateX(-50%); background: #e8edf7; box-shadow: 0 0 0 0 transparent; }
+  .art.namsan::after { content: ""; position: absolute; left: 50%; bottom: 46%; width: 18%; height: 8%; transform: translateX(-50%); background: #ff5fa2; border-radius: 3px; box-shadow: 0 0 18px #ff5fa2; }
+  .art.fuji { background: linear-gradient(transparent 70%, #8fb0d4 70%), linear-gradient(#9cc7ec, #f9d6c8 60%, #ffc4b4); }
+  .art.fuji::before { content: ""; position: absolute; left: 50%; bottom: 30%; width: 80%; height: 46%; transform: translateX(-50%); background: linear-gradient(#ffffff 0 34%, #6c81bb 34%); clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%); }
+  .art.fuji::after { content: ""; position: absolute; left: 12%; bottom: 12%; width: 18%; height: 14%; border-top: 4px solid #e0402f; border-left: 3px solid #e0402f; border-right: 3px solid #e0402f; }
+  .art.taxua { background: linear-gradient(transparent 62%, #7fae5c 62%), linear-gradient(#7fb3e6, #ffd9b0 55%, #ffc39a); }
+  .art.taxua::before { content: ""; position: absolute; left: 0; right: 0; top: 40%; height: 22%; background: radial-gradient(ellipse at 20% 60%, #fff 0 30%, transparent 31%), radial-gradient(ellipse at 60% 50%, #fff 0 34%, transparent 35%), radial-gradient(ellipse at 95% 60%, #fff 0 28%, transparent 29%); opacity: .9; }
+  .art.taxua::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 36%; background-image: radial-gradient(#ff7eb6 22%, transparent 24%), radial-gradient(#b57bff 22%, transparent 24%); background-size: 14px 12px, 18px 14px; background-position: 0 0, 7px 6px; }
+  .demo-note { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
 
-  section.later { display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: 14px; border: 1px dashed var(--key-edge); }
-  section.later h2 { margin: 0; font: 700 18px/1.3 var(--font-display); }
-  section.later ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
-  .reset { background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font: inherit; font-size: 14px; padding: 4px 0; width: fit-content; }
-  footer { color: var(--muted); font-size: 14px; }
-  footer a { color: var(--pond); }
+  /* Section headings */
+  .sec { padding: 48px 0 8px; }
+  .sec h2 { margin: 0 0 6px; font-size: clamp(24px, 3.4vw, 32px); line-height: 1.2; letter-spacing: -.01em; }
+  .sec > .wrap > p.sub { margin: 0 0 24px; color: var(--muted); max-width: 60ch; }
 
-  @media (max-width: 420px) {
-    .step { grid-template-columns: 32px minmax(0, 1fr); padding: 14px; gap: 4px 10px; }
-    .step::before { width: 30px; height: 30px; font-size: 14px; }
+  /* Before you start */
+  .ready { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .ready div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+  .ready b { display: block; margin-bottom: 2px; }
+  .ready p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* Steps + rail */
+  .install { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .rail { position: sticky; top: 84px; display: grid; gap: 14px; }
+  .bar { height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+  .rail p { margin: 0; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .rail a { display: flex; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+  .rail a:hover { background: var(--surface); color: var(--ink); }
+  .rail a .n { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 700 12px/1 var(--mono); background: var(--surface-2); color: var(--muted); }
+  .rail a.done .n { background: var(--ok); color: #fff; }
+  .rail a.done .n::after { content: "✓"; font-family: var(--font); }
+  .rail a.done .n span { display: none; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); display: grid; gap: 14px; scroll-margin-top: 84px; }
+  .step.done { border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+  .step header { display: flex; gap: 14px; align-items: flex-start; }
+  .step .num { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font: 700 15px/1 var(--mono); background: var(--accent-soft); color: var(--accent); }
+  .step.done .num { background: var(--ok); color: #fff; }
+  .step h3 { margin: 4px 0 0; font-size: 19px; line-height: 1.35; }
+  .step .tag { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); font-size: 12px; font-weight: 600; vertical-align: 2px; }
+  .step p { margin: 0; }
+  .step ol.do { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+  .menu { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-weight: 600; }
+  .menu span { padding: 4px 10px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); font-size: 14px; }
+  .menu em { font-style: normal; color: var(--muted); }
+  .keys { display: grid; gap: 8px; }
+  .keys div { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .keys small { color: var(--muted); font-size: 13px; }
+  kbd {
+    display: inline-block; min-width: 2em; padding: 3px 8px;
+    font: 700 13px/1.3 var(--mono); text-align: center;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-bottom-width: 3px; border-radius: 7px;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .step { transition: opacity .2s; }
+  code { font: 500 14px/1.4 var(--mono); background: var(--surface-2); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+  .see { padding: 12px 14px 12px 42px; border-radius: 12px; background: var(--ok-soft); font-size: 15px; position: relative; }
+  .see::before { content: "👀"; position: absolute; left: 14px; top: 12px; }
+    details { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+  summary { cursor: pointer; padding: 12px 14px; font-weight: 600; font-size: 15px; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--muted); font-weight: 700; }
+  details[open] summary::after { content: "–"; }
+  details > div { padding: 0 14px 14px; display: grid; gap: 10px; font-size: 15px; }
+  details ol, details ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .tick { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font: 600 14px/1 var(--font); cursor: pointer; }
+  .tick::before { content: ""; width: 16px; height: 16px; border-radius: 5px; border: 2px solid currentColor; }
+  .tick[aria-pressed="true"] { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); background: var(--ok-soft); }
+  .tick[aria-pressed="true"]::before { content: "✓"; display: grid; place-items: center; font-size: 12px; background: var(--ok); border-color: var(--ok); color: #fff; }
+  .status { min-height: 1.4em; font-size: 14px; color: var(--ok); font-weight: 600; }
+  .fallback textarea { width: 100%; height: 110px; resize: vertical; font: 12px/1.4 var(--mono); background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .btn.small { min-height: 38px; padding: 0 14px; font-size: 14px; border-radius: 10px; }
+
+  /* FAQ */
+  .faq { display: grid; gap: 10px; max-width: 760px; }
+  .faq details { background: var(--surface); }
+  .reset { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font: inherit; font-size: 14px; justify-self: start; }
+
+  footer { margin-top: 56px; padding: 24px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+  @media (max-width: 900px) {
+    .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .install { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .rail { position: sticky; top: 60px; z-index: 5; background: var(--bg); padding: 10px 0; margin-inline: -4px; }
+    .rail ol { display: none; }
   }
-  .copy:disabled { opacity: .6; cursor: progress; }
-  .other { font-size: 14px; color: var(--muted); }
-  .other a { color: var(--pond); }
+  @media (max-width: 600px) {
+    .hero { padding-top: 32px; }
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ready { grid-template-columns: minmax(0, 1fr); }
+    .step { padding: 18px; }
+    .cta .btn { flex: 1 1 100%; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <span class="eyebrow">Claude Themes · app Claude Desktop</span>
-    <h1>Khung cảnh ASCII nguyên màn hình trong app Claude</h1>
-    <p class="other">Dùng claude.ai trên trình duyệt hoặc điện thoại? Cách đó tự động hơn: xem <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">hướng dẫn đầy đủ</a>.</p>
-    <p class="lead">Làm lần lượt 6 bước. Mỗi bước xong thì tick vào ô bên dưới. Lần đầu mất khoảng 2 phút; những lần sau chỉ còn 3 phím.</p>
-    <div class="bar">
-      <div class="seg" role="group" aria-label="Hệ điều hành">
-        <button type="button" id="os-win" data-os="win" aria-pressed="true">Windows</button>
-        <button type="button" id="os-mac" data-os="mac" aria-pressed="false">Mac</button>
-      </div>
-      <span class="progress" id="progress">0/6 bước</span>
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="logo" aria-hidden="true"><i style="background:#ff9ec4"></i><i style="background:#ffd93d"></i><i style="background:#4aa8ff"></i><i style="background:#62cf5c"></i><i style="background:#a55cf0"></i><i style="background:#ff5a5a"></i><i style="background:#7f92c9"></i><i style="background:#ff5fa2"></i><i style="background:#c46bd6"></i></span>Claude Themes</a>
+    <div class="seg" role="group" aria-label="Máy tính của bạn">
+      <button type="button" data-os="win" aria-pressed="true">Windows</button>
+      <button type="button" data-os="mac" aria-pressed="false">Mac</button>
     </div>
-  </header>
-
-  <ol class="steps" id="steps">
-    <li class="step" data-step="1">
-      <div class="body">
-        <h2>Bật Developer Mode (chỉ làm 1 lần)</h2>
-        <p class="win">Trong app Claude, bấm nút <b>☰</b> ở góc trên bên trái, rồi chọn:</p>
-        <p class="mac" hidden>Trong app Claude, dùng thanh menu trên cùng màn hình và chọn:</p>
-        <p class="path">Help<span>→</span>Troubleshooting<span>→</span>Enable Developer Mode</p>
-        <p class="note">App có thể hỏi xác nhận rồi tự khởi động lại. Xong khi menu có thêm mục <b>Developer</b>.</p>
-        <label class="check"><input type="checkbox" id="done-1"> Đã xong</label>
-      </div>
-    </li>
-
-    <li class="step" data-step="2">
-      <div class="body">
-        <h2>Mở DevTools của app Claude</h2>
-        <p><b>Bấm chuột vào cửa sổ app Claude trước</b>, rồi thử lần lượt từng tổ hợp phím dưới đây cho tới khi DevTools hiện ra:</p>
-        <ul class="win">
-          <li><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> (phím tắt trong tài liệu chính thức)</li>
-          <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd></li>
-          <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></li>
-        </ul>
-        <ul class="mac" hidden>
-          <li><kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>I</kbd></li>
-          <li><kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></li>
-        </ul>
-        <p class="warn">Đừng bấm phím này trong Chrome hay Edge. Nếu phía trên DevTools có các tab trang web (GitHub, YouTube…), đó là DevTools của trình duyệt: đóng nó lại và bấm vào cửa sổ app Claude.</p>
-        <p class="note">Có thể có <b>2 cửa sổ DevTools</b> hiện ra: một cho phần nội dung chính, một cho thanh tiêu đề của app. Để biết cửa sổ nào đúng, bấm tab <b>Console</b> trong từng cửa sổ, gõ <code>location.href</code> rồi nhấn Enter. Cửa sổ hiện địa chỉ có chữ <code>claude.ai</code> là cửa sổ đúng. Cửa sổ kia có thể đóng.</p>
-        <p class="note">Không phím nào mở được? Xem mục <a href="#khong-mo-duoc">Không mở được DevTools</a> ở cuối trang.</p>
-        <label class="check"><input type="checkbox" id="done-2"> Đã xong</label>
-      </div>
-    </li>
-
-    <li class="step" data-step="3">
-      <div class="body">
-        <h2>Sao chép script</h2>
-        <p>Bấm nút này. Toàn bộ script hình nền (khoảng 1.700 dòng) được chép vào bộ nhớ tạm.</p>
-        <p class="warn">Chỉ dùng nút này. Đừng tự bôi đen rồi chép chữ trên trang hướng dẫn.</p>
-        <button class="copy" type="button" id="copy-script">Sao chép script hình nền</button>
-        <div class="status" id="copy-status" role="status" aria-live="polite"></div>
-        <div class="fallback" id="fallback" hidden>
-          <p class="note">Trình duyệt chặn nút sao chép. Bấm vào ô dưới, nhấn <span class="win"><kbd>Ctrl</kbd>+<kbd>A</kbd> rồi <kbd>Ctrl</kbd>+<kbd>C</kbd></span><span class="mac" hidden><kbd>Cmd</kbd>+<kbd>A</kbd> rồi <kbd>Cmd</kbd>+<kbd>C</kbd></span>.</p>
-          <textarea id="fallback-text" readonly aria-label="Script hình nền"></textarea>
-        </div>
-        <label class="check"><input type="checkbox" id="done-3"> Đã xong</label>
-      </div>
-    </li>
-
-    <li class="step" data-step="4">
-      <div class="body">
-        <h2>Dán vào Console</h2>
-        <p>Trong DevTools, bấm tab <b>Console</b>. Bấm vào dòng trống có dấu <code>&gt;</code> ở dưới cùng, rồi dán bằng <span class="win"><kbd>Ctrl</kbd>+<kbd>V</kbd></span><span class="mac" hidden><kbd>Cmd</kbd>+<kbd>V</kbd></span>.</p>
-        <p class="note">Dán đúng thì ô Console dài ra rất nhiều dòng. Nếu chỉ thấy 1–2 dòng là bạn chưa chép đúng: quay lại bước 3 và bấm nút sao chép.</p>
-        <div class="fixpaste">
-          <p><b>DevTools không cho dán?</b> Nếu có cảnh báo <i>“Don't paste code…”</i> bảo gõ chữ <code>allow pasting</code>:</p>
-          <ol>
-            <li><b>Tắt bộ gõ tiếng Việt</b> (Unikey, EVKey, bộ gõ của Windows/Mac): chuyển sang chế độ <b>E</b> / tiếng Anh. Để bộ gõ Telex thì chữ <code>allow</code> sẽ thành <code>allơ</code> và DevTools không nhận.</li>
-            <li><b>Gõ tay</b> từng chữ <code>allow pasting</code> vào dòng <code>&gt;</code> của Console (hoặc vào ô nhập trong hộp cảnh báo), rồi nhấn <kbd>Enter</kbd>. Chữ này <b>không dán được</b>, vì lúc đó DevTools đang chặn mọi thao tác dán.</li>
-            <li>Dán script lại.</li>
-          </ol>
-          <p class="note">Cảnh báo ghi chữ khác (ví dụ bằng tiếng Việt) thì gõ đúng chữ trong cảnh báo. Gõ xong mà hiện dòng đỏ <code>SyntaxError</code> thì không sao: nghĩa là DevTools vốn không chặn, cứ dán script bình thường.</p>
-        </div>
-        <label class="check"><input type="checkbox" id="done-4"> Đã xong</label>
-      </div>
-    </li>
-
-    <li class="step" data-step="5">
-      <div class="body">
-        <h2>Nhấn Enter</h2>
-        <p>Console hiện dòng chữ xanh <b>“✅ Claude Themes đã chạy…”</b>. Hình nền chuyển động hiện ra phía sau khung chat, và có thêm nút ô vuông nhiều màu ở cạnh phải. Bạn có thể đóng DevTools, hình nền vẫn ở lại.</p>
-        <p class="note">Có dòng xanh nhưng không thấy hình nền? Có thể bạn đang ở DevTools của trình duyệt (xem lại bước 2). Hoặc ở tab Console, bấm ô chọn phía trên (thường ghi <code>top</code>), chọn mục có chữ <b>claude</b>, rồi làm lại bước 4.</p>
-        <label class="check"><input type="checkbox" id="done-5"> Đã xong</label>
-      </div>
-    </li>
-
-    <li class="step" data-step="6">
-      <div class="body">
-        <h2>Chọn theme bạn thích</h2>
-        <ul>
-          <li>Mở bảng chọn: <span class="win"><kbd>Alt</kbd>+<kbd>T</kbd></span><span class="mac" hidden><kbd>Option</kbd>+<kbd>T</kbd></span> hoặc bấm nút ô vuông nhiều màu.</li>
-          <li>Bấm vào ảnh để đổi theme. Chữ khó đọc thì kéo thanh <b>Làm dịu nền</b>.</li>
-        </ul>
-        <label class="check"><input type="checkbox" id="done-6"> Đã xong</label>
-      </div>
-    </li>
-  </ol>
-
-  <section class="later" id="khong-mo-duoc" aria-labelledby="fix-title">
-    <h2 id="fix-title">Không mở được DevTools</h2>
-    <p>Kiểm tra file cài đặt Developer Mode của app, rồi khởi động lại app cho hẳn:</p>
-    <ol>
-      <li class="win">Bấm <kbd>Win</kbd>+<kbd>R</kbd>, dán <code>%APPDATA%\Claude</code> rồi nhấn <kbd>Enter</kbd>. Thư mục cài đặt của Claude mở ra.</li>
-      <li class="mac" hidden>Trong Finder, bấm <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>, dán <code>~/Library/Application Support/Claude</code> rồi nhấn <kbd>Enter</kbd>.</li>
-      <li>Tìm file <code>developer_settings.json</code> và mở bằng <span class="win">Notepad</span><span class="mac" hidden>TextEdit</span> (chuột phải → Open with). Nếu chưa có file đó, tạo file mới với đúng tên này.</li>
-      <li>Nội dung file phải có dòng <code>"allowDevTools": true</code>. File mới thì dán nguyên nội dung sau rồi lưu:
-        <div><button class="copy small" type="button" id="copy-devsettings">Sao chép {"allowDevTools": true}</button></div>
-        <div class="status" id="devsettings-status" role="status" aria-live="polite"></div>
-      </li>
-      <li class="win">Thoát hẳn Claude: nút ✕ chỉ thu app xuống khay. Bấm mũi tên <b>^</b> ở góc dưới bên phải màn hình (cạnh đồng hồ), chuột phải vào biểu tượng Claude, chọn <b>Quit</b>. Rồi mở lại app.</li>
-      <li class="mac" hidden>Thoát hẳn Claude bằng <kbd>Cmd</kbd>+<kbd>Q</kbd>, rồi mở lại app.</li>
-      <li>Bấm vào cửa sổ app Claude và thử lại các phím ở bước 2.</li>
-    </ol>
-  </section>
-
-  <section class="later" aria-labelledby="later-title">
-    <h2 id="later-title">Những lần mở app sau</h2>
-    <p>Tắt app thì hình nền mất. Mở lại thì làm 3 việc:</p>
-    <ol>
-      <li>Bấm vào cửa sổ app Claude, mở DevTools bằng tổ hợp phím đã dùng được ở bước 2.</li>
-      <li>Quay lại trang này, bấm <b>Sao chép script hình nền</b> (bước 3).</li>
-      <li>Tab <b>Console</b> → dán → <kbd>Enter</kbd>. Theme bạn chọn trước đó tự được dùng lại.</li>
-    </ol>
-    <button class="reset" type="button" id="reset">Bỏ hết dấu tick để làm lại từ đầu</button>
-  </section>
-
-  <footer>
-    Mã nguồn và hướng dẫn đầy đủ: <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">HUONG-DAN.md trên GitHub</a>. Script chỉ lưu lựa chọn theme trên máy bạn và không gửi dữ liệu đi đâu.
-  </footer>
+  </div>
 </div>
+
+<main id="top">
+  <section class="wrap hero">
+    <span class="pill">Miễn phí · Dành cho app Claude trên máy tính</span>
+    <h1>Thêm hình nền động cho app Claude</h1>
+    <p class="lead">Biến khung chat thành một khung cảnh chuyển động nhẹ nhàng: hải ly hồng, thỏ dưới cầu vồng, Seoul về đêm, núi Phú Sĩ hay biển mây Tà Xùa. Cài trong khoảng 2 phút, không cần biết lập trình.</p>
+    <div class="cta">
+      <a class="btn primary" href="#cai-dat">Bắt đầu cài đặt</a>
+      <button class="btn ghost" type="button" id="demo" disabled>Đang chuẩn bị bản xem thử…</button>
+    </div>
+    <ul class="facts">
+      <li>Không gửi dữ liệu đi đâu</li>
+      <li>Không cài thêm phần mềm</li>
+      <li>Tắt bất cứ lúc nào</li>
+    </ul>
+  </section>
+
+  <section class="wrap" aria-labelledby="themes-title">
+    <h2 id="themes-title" class="sr" hidden>5 khung cảnh</h2>
+    <div class="gallery" id="gallery">
+      <button class="theme" type="button" data-id="beaver" tabindex="-1"><div class="art beaver" data-pxt-ui="art"></div><div class="txt"><b>Hải Ly Hồng</b><span>Hải ly hồng trên khúc gỗ, tim bay</span></div></button>
+      <button class="theme" type="button" data-id="bunny" tabindex="-1"><div class="art bunny" data-pxt-ui="art"></div><div class="txt"><b>Thỏ Bảy Màu</b><span>Thỏ trắng nhảy dưới cầu vồng</span></div></button>
+      <button class="theme" type="button" data-id="namsan" tabindex="-1"><div class="art namsan" data-pxt-ui="art"></div><div class="txt"><b>Tháp Namsan</b><span>Seoul về đêm, tháp đổi màu</span></div></button>
+      <button class="theme" type="button" data-id="fuji" tabindex="-1"><div class="art fuji" data-pxt-ui="art"></div><div class="txt"><b>Núi Phú Sĩ</b><span>Núi tuyết, hoa anh đào rơi</span></div></button>
+      <button class="theme" type="button" data-id="taxua" tabindex="-1"><div class="art taxua" data-pxt-ui="art"></div><div class="txt"><b>Tà Xùa</b><span>Biển mây, cánh đồng hoa</span></div></button>
+    </div>
+    <p class="demo-note" id="demo-note">Bấm <b>Xem thử</b> ở trên để thấy hình nền chạy thật ngay trên trang này.</p>
+  </section>
+
+  <section class="sec" id="cai-dat" aria-labelledby="install-title">
+    <div class="wrap">
+      <h2 id="install-title">Cài đặt trong 5 bước</h2>
+      <p class="sub">Làm lần lượt từ trên xuống. Xong bước nào thì bấm <b>Đã xong</b> để đánh dấu. Trang sẽ nhớ bạn đang ở đâu.</p>
+
+      <div class="ready">
+        <div><b>Bạn cần</b><p>App Claude đã cài trên máy tính (Windows hoặc Mac) và trang này mở bên cạnh.</p></div>
+        <div><b>Mất khoảng</b><p>2 phút cho lần đầu. Những lần sau chỉ còn 30 giây.</p></div>
+        <div><b>Đừng lo nếu thấy chữ lạ</b><p>Ở bước 2 sẽ hiện một cửa sổ đầy chữ kỹ thuật. Bạn chỉ cần dán một đoạn và nhấn Enter.</p></div>
+      </div>
+
+      <div class="install">
+        <nav class="rail" aria-label="Tiến độ">
+          <div class="bar"><i id="bar"></i></div>
+          <p id="progress">Đã xong 0/5 bước</p>
+          <ol id="rail">
+            <li><a href="#b1"><span class="n"><span>1</span></span>Bật chế độ nâng cao</a></li>
+            <li><a href="#b2"><span class="n"><span>2</span></span>Mở cửa sổ Console</a></li>
+            <li><a href="#b3"><span class="n"><span>3</span></span>Chép đoạn mã</a></li>
+            <li><a href="#b4"><span class="n"><span>4</span></span>Dán và nhấn Enter</a></li>
+            <li><a href="#b5"><span class="n"><span>5</span></span>Chọn khung cảnh</a></li>
+          </ol>
+        </nav>
+
+        <ol class="steps">
+          <li class="step" id="b1" data-step="1">
+            <header><span class="num">1</span><h3>Bật chế độ nâng cao trong app Claude <span class="tag">chỉ làm 1 lần</span></h3></header>
+            <p class="win">Mở app Claude. Bấm vào biểu tượng <b>☰</b> (ba gạch) ở góc trên bên trái, rồi chọn lần lượt:</p>
+            <p class="mac" hidden>Mở app Claude. Trên thanh menu ở mép trên màn hình, chọn lần lượt:</p>
+            <p class="menu"><span>Help</span><em>›</em><span>Troubleshooting</span><em>›</em><span>Enable Developer Mode</span></p>
+            <p class="see">App có thể hỏi lại và tự mở lại. Xong khi trên menu có thêm mục <b>Developer</b>.</p>
+            <details>
+              <summary>Không thấy mục này?</summary>
+              <div><p>Hãy cập nhật app Claude lên bản mới nhất (vào <b>Help › Check for Updates</b>), rồi thử lại.</p></div>
+            </details>
+            <button class="tick" type="button" data-done="1" aria-pressed="false">Đã xong</button>
+          </li>
+
+          <li class="step" id="b2" data-step="2">
+            <header><span class="num">2</span><h3>Mở cửa sổ Console</h3></header>
+            <p>Console là một ô để dán lệnh cho app. <b>Bấm chuột vào cửa sổ app Claude trước</b>, rồi nhấn tổ hợp phím sau:</p>
+            <div class="keys win">
+              <div><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd></div>
+              <div><small>Không được thì thử:</small> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></div>
+            </div>
+            <div class="keys mac" hidden>
+              <div><kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>I</kbd></div>
+              <div><small>Không được thì thử:</small> <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></div>
+            </div>
+            <p>Một cửa sổ đầy chữ hiện ra. Ở hàng trên cùng của nó, bấm vào chữ <b>Console</b>.</p>
+            <p class="see">Bạn thấy một vùng trống, dưới cùng có dấu <code>&gt;</code> nhấp nháy.</p>
+            <details>
+              <summary>Hiện ra 2 cửa sổ, hoặc mở nhầm của trình duyệt?</summary>
+              <div>
+                <p><b>Mở nhầm trình duyệt:</b> nếu cửa sổ đó nằm trong Chrome hay Edge (phía trên có các tab trang web), hãy đóng nó, bấm vào cửa sổ app Claude rồi nhấn phím lại.</p>
+                <p><b>Có 2 cửa sổ:</b> ở mỗi cửa sổ, vào Console, gõ <code>location.href</code> rồi nhấn Enter. Cửa sổ hiện chữ <code>claude.ai</code> là cửa sổ đúng. Cửa sổ kia đóng đi.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Nhấn phím mà không có gì hiện ra?</summary>
+              <div>
+                <ol>
+                  <li class="win">Nhấn <kbd>Win</kbd>+<kbd>R</kbd>, gõ <code>%APPDATA%\Claude</code> rồi nhấn Enter.</li>
+                  <li class="mac" hidden>Trong Finder, nhấn <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>, dán <code>~/Library/Application Support/Claude</code> rồi nhấn Enter.</li>
+                  <li>Mở file <code>developer_settings.json</code> bằng <span class="win">Notepad</span><span class="mac" hidden>TextEdit</span>. Chưa có thì tạo file mới với đúng tên đó.</li>
+                  <li>Xoá hết nội dung, dán dòng dưới đây vào rồi lưu lại:
+                    <div style="margin-top:8px"><button class="btn ghost small" type="button" id="copy-devsettings">Chép dòng cần dán</button></div>
+                    <div class="status" id="devsettings-status" role="status" aria-live="polite"></div>
+                  </li>
+                  <li class="win">Thoát hẳn Claude: bấm mũi tên <b>^</b> cạnh đồng hồ ở góc dưới màn hình, chuột phải vào biểu tượng Claude, chọn <b>Quit</b>. Rồi mở lại app.</li>
+                  <li class="mac" hidden>Thoát hẳn Claude bằng <kbd>Cmd</kbd>+<kbd>Q</kbd>, rồi mở lại app.</li>
+                  <li>Thử lại phím ở trên.</li>
+                </ol>
+              </div>
+            </details>
+            <button class="tick" type="button" data-done="2" aria-pressed="false">Đã xong</button>
+          </li>
+
+          <li class="step" id="b3" data-step="3">
+            <header><span class="num">3</span><h3>Chép đoạn mã hình nền</h3></header>
+            <p>Bấm nút dưới đây. Đoạn mã sẽ được chép sẵn, bạn không cần bôi đen gì cả.</p>
+            <button class="btn primary" type="button" id="copy-script" disabled>Đang tải đoạn mã…</button>
+            <div class="status" id="copy-status" role="status" aria-live="polite"></div>
+            <div class="fallback" id="fallback" hidden>
+              <p>Máy chặn nút chép tự động. Bấm vào ô dưới, nhấn <span class="win"><kbd>Ctrl</kbd>+<kbd>A</kbd> rồi <kbd>Ctrl</kbd>+<kbd>C</kbd></span><span class="mac" hidden><kbd>Cmd</kbd>+<kbd>A</kbd> rồi <kbd>Cmd</kbd>+<kbd>C</kbd></span>.</p>
+              <textarea id="fallback-text" readonly aria-label="Đoạn mã hình nền"></textarea>
+            </div>
+            <button class="tick" type="button" data-done="3" aria-pressed="false">Đã xong</button>
+          </li>
+
+          <li class="step" id="b4" data-step="4">
+            <header><span class="num">4</span><h3>Dán vào Console và nhấn Enter</h3></header>
+            <ol class="do">
+              <li>Quay lại cửa sổ Console ở bước 2, bấm vào dòng có dấu <code>&gt;</code>.</li>
+              <li>Dán bằng <span class="win"><kbd>Ctrl</kbd>+<kbd>V</kbd></span><span class="mac" hidden><kbd>Cmd</kbd>+<kbd>V</kbd></span>, rồi nhấn <kbd>Enter</kbd>.</li>
+            </ol>
+            <p class="see">Hiện dòng chữ xanh <b>“✅ Claude Themes đã chạy”</b>, và hình nền xuất hiện sau khung chat. Giờ bạn có thể đóng cửa sổ Console.</p>
+            <details>
+              <summary>Có cảnh báo “Don't paste code…” và không dán được?</summary>
+              <div>
+                <p>Đây là lớp bảo vệ bình thường. Để mở khoá:</p>
+                <ol>
+                  <li><b>Tắt bộ gõ tiếng Việt</b> (Unikey, EVKey…), chuyển sang tiếng Anh. Nếu không, chữ sẽ bị đổi dấu.</li>
+                  <li><b>Gõ tay</b> chữ <code>allow pasting</code> vào dòng <code>&gt;</code> rồi nhấn Enter. Chữ này phải gõ, không dán được.</li>
+                  <li>Dán đoạn mã lại và nhấn Enter.</li>
+                </ol>
+              </div>
+            </details>
+            <details>
+              <summary>Thấy dòng “Tải lại cửa sổ” hoặc không thấy hình nền?</summary>
+              <div>
+                <p><b>Có dòng “Tải lại cửa sổ”:</b> app đang chạy bản cũ. Bấm vào app Claude, nhấn <span class="win"><kbd>Ctrl</kbd>+<kbd>R</kbd></span><span class="mac" hidden><kbd>Cmd</kbd>+<kbd>R</kbd></span>, rồi làm lại bước 2 đến 4.</p>
+                <p><b>Có chữ xanh mà không thấy hình nền:</b> có thể bạn dán vào nhầm cửa sổ. Xem lại phần “Hiện ra 2 cửa sổ” ở bước 2.</p>
+                <p><b>Chỉ dán được 1–2 dòng:</b> bạn chưa chép đúng. Quay lại bước 3 và bấm nút chép.</p>
+              </div>
+            </details>
+            <button class="tick" type="button" data-done="4" aria-pressed="false">Đã xong</button>
+          </li>
+
+          <li class="step" id="b5" data-step="5">
+            <header><span class="num">5</span><h3>Chọn khung cảnh bạn thích</h3></header>
+            <ol class="do">
+              <li>Gõ <code>/theme</code> vào ô chat, hoặc bấm nút ô vuông nhiều màu ở cạnh phải màn hình.</li>
+              <li>Bấm vào một khung cảnh để dùng. Chữ khó đọc thì kéo thanh <b>Làm dịu nền</b> sang phải.</li>
+            </ol>
+            <p class="see">Lựa chọn của bạn được nhớ cho những lần sau.</p>
+            <button class="tick" type="button" data-done="5" aria-pressed="false">Đã xong</button>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">Câu hỏi thường gặp</h2>
+      <p class="sub">Những điều nhiều người thắc mắc trước và sau khi cài.</p>
+      <div class="faq">
+        <details>
+          <summary>Có an toàn không?</summary>
+          <div><p>Có. Đoạn mã chỉ vẽ hình nền và nhớ khung cảnh bạn chọn ngay trên máy bạn. Nó không đọc tin nhắn, không gửi dữ liệu đi đâu. Mã nguồn công khai trên <a href="https://github.com/nambuibtt/claude-themes">GitHub</a> để ai cũng kiểm tra được.</p></div>
+        </details>
+        <details>
+          <summary>Tắt app rồi mở lại thì sao?</summary>
+          <div>
+            <p>Hình nền sẽ mất, vì app Claude không cho tự chạy thêm gì khi khởi động. Mỗi lần mở app, bạn làm lại 3 việc nhanh:</p>
+            <ol>
+              <li>Mở Console (bước 2).</li>
+              <li>Quay lại trang này, bấm nút chép (bước 3).</li>
+              <li>Dán và nhấn Enter. Khung cảnh lần trước tự được dùng lại.</li>
+            </ol>
+          </div>
+        </details>
+        <details>
+          <summary>Làm sao tắt hình nền?</summary>
+          <div><p>Gõ <code>/theme off</code> vào ô chat, hoặc mở bảng chọn và chọn <b>Tắt</b>. Đóng app rồi mở lại cũng sẽ về giao diện gốc.</p></div>
+        </details>
+        <details>
+          <summary>Tôi dùng Claude trên trình duyệt hoặc điện thoại?</summary>
+          <div><p>Có cách tự động hơn: cài tiện ích Tampermonkey (máy tính) hoặc Userscripts (iPhone), sau đó hình nền tự bật mỗi lần mở claude.ai. Xem <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">hướng dẫn đầy đủ</a>.</p></div>
+        </details>
+        <details>
+          <summary>Máy chạy có bị chậm không?</summary>
+          <div><p>Rất nhẹ: hình nền tự dừng khi bạn chuyển sang cửa sổ khác. Muốn tiết kiệm pin hơn, bỏ tick <b>Chuyển động</b> trong bảng chọn để hình đứng yên.</p></div>
+        </details>
+      </div>
+      <p style="margin-top:20px"><button class="reset" type="button" id="reset">Bỏ hết dấu “Đã xong” để làm lại từ đầu</button></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Claude Themes · mã nguồn mở, giấy phép MIT</span>
+    <span><a href="https://github.com/nambuibtt/claude-themes">GitHub</a> · <a href="https://github.com/nambuibtt/claude-themes/blob/main/HUONG-DAN.md">Hướng dẫn đầy đủ</a> · <a href="https://github.com/nambuibtt/claude-themes/issues">Báo lỗi</a></span>
+  </div>
+</footer>
 
 <script>
   (function () {
-    var KEY = 'desk-setup:v1';
+    var KEY = 'claude-themes-setup:v2';
+    var TOTAL = 5;
     var state = { os: /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? 'mac' : 'win', done: {} };
     try { Object.assign(state, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
     function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    function $(id) { return document.getElementById(id); }
 
+    // Windows / Mac
+    var segs = document.querySelectorAll('.seg button');
     function applyOs() {
       document.querySelectorAll('.win').forEach(function (el) { el.hidden = state.os !== 'win'; });
       document.querySelectorAll('.mac').forEach(function (el) { el.hidden = state.os !== 'mac'; });
-      document.querySelectorAll('.seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.os === state.os)); });
+      segs.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.os === state.os)); });
     }
-    document.querySelectorAll('.seg button').forEach(function (b) {
-      b.addEventListener('click', function () { state.os = b.dataset.os; save(); applyOs(); });
-    });
+    segs.forEach(function (b) { b.addEventListener('click', function () { state.os = b.dataset.os; save(); applyOs(); }); });
 
-    var steps = document.querySelectorAll('.step');
+    // Progress
+    var railLinks = document.querySelectorAll('#rail a');
     function applyDone() {
       var n = 0;
-      steps.forEach(function (li) {
-        var i = li.dataset.step;
-        var box = document.getElementById('done-' + i);
-        box.checked = !!state.done[i];
-        li.classList.toggle('done', box.checked);
-        if (box.checked) n++;
+      document.querySelectorAll('.step').forEach(function (li, i) {
+        var k = li.dataset.step;
+        var on = !!state.done[k];
+        if (on) n++;
+        li.classList.toggle('done', on);
+        var t = li.querySelector('.tick');
+        t.setAttribute('aria-pressed', String(on));
+        t.textContent = on ? 'Đã xong' : 'Đánh dấu đã xong';
+        if (railLinks[i]) railLinks[i].classList.toggle('done', on);
       });
-      document.getElementById('progress').textContent = n === steps.length ? 'Xong cả 6 bước 🎉' : n + '/6 bước';
+      $('bar').style.width = (n / TOTAL) * 100 + '%';
+      $('progress').textContent = n === TOTAL ? 'Hoàn tất! Chúc bạn dùng vui 🎉' : 'Đã xong ' + n + '/' + TOTAL + ' bước';
     }
-    steps.forEach(function (li) {
-      var i = li.dataset.step;
-      document.getElementById('done-' + i).addEventListener('change', function (e) { state.done[i] = e.target.checked; save(); applyDone(); });
+    document.querySelectorAll('.tick').forEach(function (t) {
+      t.addEventListener('click', function () {
+        var k = t.dataset.done;
+        state.done[k] = !state.done[k];
+        save();
+        applyDone();
+        var next = $('b' + (Number(k) + 1));
+        if (state.done[k] && next && !state.done[Number(k) + 1]) next.scrollIntoView({ block: 'start' });
+      });
     });
-    document.getElementById('reset').addEventListener('click', function () { state.done = {}; save(); applyDone(); });
+    $('reset').addEventListener('click', function () { state.done = {}; save(); applyDone(); $('b1').scrollIntoView({ block: 'start' }); });
 
     function copy(text, statusId, okText, onFail) {
-      var status = document.getElementById(statusId);
+      var status = $(statusId);
       function fail() { status.textContent = ''; if (onFail) onFail(); }
-      try {
-        navigator.clipboard.writeText(text).then(function () { status.textContent = okText; }, fail);
-      } catch (e) { fail(); }
+      try { navigator.clipboard.writeText(text).then(function () { status.textContent = okText; }, fail); } catch (e) { fail(); }
     }
+
     // The script is read from the copy published beside this page, so the page always hands out the latest version.
     var RAW = 'https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js';
     var script = '';
-    var copyBtn = document.getElementById('copy-script');
-    copyBtn.disabled = true;
-    copyBtn.textContent = 'Đang tải script…';
+    var copyBtn = $('copy-script');
+    var demoBtn = $('demo');
     fetch('claude-themes.user.js', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-      .then(function (t) { script = t; copyBtn.disabled = false; copyBtn.textContent = 'Sao chép script hình nền'; })
+      .then(function (t) {
+        script = t;
+        copyBtn.disabled = false;
+        copyBtn.textContent = 'Chép đoạn mã hình nền';
+        demoBtn.disabled = false;
+        demoBtn.textContent = 'Xem thử trên trang này';
+      })
       .catch(function () {
-        copyBtn.textContent = 'Không tải được script';
-        var st = document.getElementById('copy-status');
-        st.textContent = 'Mở link sau, bấm Ctrl+A rồi Ctrl+C: ';
+        copyBtn.textContent = 'Không tải được đoạn mã';
+        demoBtn.hidden = true;
+        var st = $('copy-status');
+        st.textContent = 'Mở link sau, chọn hết rồi chép: ';
         var a = document.createElement('a');
         a.href = RAW;
-        a.textContent = RAW;
+        a.textContent = 'đoạn mã trên GitHub';
         st.appendChild(a);
       });
     copyBtn.addEventListener('click', function () {
       if (!script) return;
-      copy(script, 'copy-status', 'Đã chép script (' + Math.round(script.length / 1000) + ' KB). Sang bước 4 để dán.', function () {
-        var box = document.getElementById('fallback');
-        var area = document.getElementById('fallback-text');
+      copy(script, 'copy-status', 'Đã chép! Sang bước 4 để dán.', function () {
+        $('fallback').hidden = false;
+        var area = $('fallback-text');
         area.value = script;
-        box.hidden = false;
         area.focus();
         area.select();
       });
-      state.done['3'] = true; save(); applyDone();
+      if (!state.done['3']) { state.done['3'] = true; save(); applyDone(); }
     });
-    document.getElementById('copy-devsettings').addEventListener('click', function () {
+    $('copy-devsettings').addEventListener('click', function () {
       copy('{"allowDevTools": true}', 'devsettings-status', 'Đã chép. Dán vào file rồi lưu.', function () {
-        document.getElementById('devsettings-status').textContent = 'Gõ tay: {"allowDevTools": true}';
+        $('devsettings-status').textContent = 'Gõ tay dòng này: {"allowDevTools": true}';
+      });
+    });
+
+    // Live demo: run the real script on this page; the gallery cards then switch scenes.
+    var gallery = $('gallery');
+    var cards = gallery.querySelectorAll('.theme');
+    function mark(id) { cards.forEach(function (c) { c.classList.toggle('on', c.dataset.id === id); }); }
+    function demoOn() { return !!window.__claudeThemes; }
+    function syncDemo() {
+      var on = demoOn();
+      gallery.classList.toggle('live', on);
+      cards.forEach(function (c) { c.tabIndex = on ? 0 : -1; });
+      demoBtn.textContent = on ? 'Tắt xem thử' : 'Xem thử trên trang này';
+      $('demo-note').innerHTML = on ? 'Đang xem thử. Bấm vào từng khung cảnh để đổi. Đây đúng là thứ bạn sẽ thấy trong app Claude.' : 'Bấm <b>Xem thử</b> ở trên để thấy hình nền chạy thật ngay trên trang này.';
+      mark(on ? window.__claudeThemes.current : null);
+    }
+    demoBtn.addEventListener('click', function () {
+      if (demoOn()) {
+        if (window.__claudeThemes.destroy) window.__claudeThemes.destroy();
+      } else if (script) {
+        try { (0, eval)(script); } catch (e) { return; }
+        if (window.__claudeThemes && window.__claudeThemes.current === 'off') window.__claudeThemes.set('fuji');
+      }
+      syncDemo();
+    });
+    cards.forEach(function (c) {
+      c.addEventListener('click', function () {
+        if (!demoOn()) return;
+        window.__claudeThemes.set(c.dataset.id);
+        mark(c.dataset.id);
       });
     });
 
