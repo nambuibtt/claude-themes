@@ -4,10 +4,10 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { Prefs } from '../types'
 import { THEMES, byId, findTheme, scene } from './scenes'
 
-const DEFAULTS: Prefs = { theme: 'cloud', band: true, tint: true }
+const DEFAULTS: Prefs = { theme: 'cloud', tint: true }
 const STORE_KEY = 'prefs'
 // Change the tag when Prefs changes: it declines what an earlier version kept.
-const prefs = atom({ plugin: 'themes-for-claude', key: 'prefs' } as const, DEFAULTS, { shape: 'prefs-1' })
+const prefs = atom({ plugin: 'themes-for-claude', key: 'prefs' } as const, DEFAULTS, { shape: 'prefs-2' })
 
 const PICKER = 'desk-picker'
 const SIDE = 'desk-scene'
@@ -24,7 +24,6 @@ function restore(saved: unknown): Prefs {
   const s = (saved && typeof saved === 'object' ? saved : {}) as Partial<Prefs>
   return {
     theme: typeof s.theme === 'string' && (s.theme === 'off' || byId(s.theme)) ? s.theme : DEFAULTS.theme,
-    band: typeof s.band === 'boolean' ? s.band : DEFAULTS.band,
     tint: typeof s.tint === 'boolean' ? s.tint : DEFAULTS.tint,
   }
 }
@@ -38,7 +37,7 @@ export const register: Register = on => {
     await $.command.register({
       name: 'desk',
       description: 'Khung cảnh ASCII: mở bảng chọn, hoặc /desk <theme> (koi, moon, off…)',
-      argumentHint: '[theme | off | side | band | tint]',
+      argumentHint: '[theme | off | side | tint]',
     })
 
     return next(e)
@@ -56,10 +55,9 @@ export const register: Register = on => {
       await $.ui.open({ id: SIDE, title: 'Desk scene', backgroundColor: 'transparent' })
       return { text: 'Đã mở khung cảnh ASCII bên cạnh.' }
     }
-    if (word === 'band' || word === 'tint') {
-      const p = await change($, cur => ({ ...cur, [word]: !cur[word] }))
-      const what = word === 'band' ? 'Dải cảnh trên ô chat' : 'Tô màu tin nhắn'
-      return { text: `${what}: ${p[word] ? 'bật' : 'tắt'}.` }
+    if (word === 'tint') {
+      const p = await change($, cur => ({ ...cur, tint: !cur.tint }))
+      return { text: `Tô màu tin nhắn: ${p.tint ? 'bật' : 'tắt'}.` }
     }
 
     const id = findTheme(arg)
@@ -75,7 +73,7 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PICKER }, async ($, e) => {
     const p = await read($, prefs)
     const pick = (id: string) => () => change($, cur => ({ ...cur, theme: id }))
-    const flip = (key: 'band' | 'tint') => () => change($, cur => ({ ...cur, [key]: !cur[key] }))
+    const flip = (key: 'tint') => () => change($, cur => ({ ...cur, [key]: !cur[key] }))
     const mark = (id: string) => (id === p.theme ? '✓ ' : '')
 
     if (e.surface === 'terminal') {
@@ -117,7 +115,6 @@ export const register: Register = on => {
           </Box>
         </Box>
         <Box flexDirection="row" flexWrap="wrap" gap={1}>
-          <Button key="band" label={`Dải cảnh trên ô chat: ${p.band ? 'bật' : 'tắt'}`} onPress={flip('band')} />
           <Button key="tint" label={`Tô màu tin nhắn: ${p.tint ? 'bật' : 'tắt'}`} onPress={flip('tint')} />
           <Button
             key="side"
@@ -125,23 +122,6 @@ export const register: Register = on => {
             onPress={() => $.ui.open({ id: SIDE, title: 'Desk scene', backgroundColor: 'transparent' })}
           />
         </Box>
-      </Box>
-    )
-  })
-
-  // The animated strip just above the prompt.
-  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    if (e.surface === 'terminal' || e.props.hasSurvey) return next(e)
-    const p = await read($, prefs)
-    const t = byId(p.theme)
-    if (!t || !p.band) return next(e)
-    const { Box, Svg } = $.ui.resolve(e)
-    const others = await next(e)
-
-    return (
-      <Box flexDirection="column">
-        {others}
-        <Svg source={scene(t.id, 'band')} alt={`${t.name}: ${t.desc}`} height={84} isInteractive />
       </Box>
     )
   })

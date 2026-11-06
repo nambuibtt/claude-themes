@@ -13,7 +13,7 @@ Biến khung chat của Claude thành một khung cảnh ASCII chuyển động.
 | claude.ai trên trình duyệt máy tính | Cài [Tampermonkey](https://www.tampermonkey.net/), rồi mở [link script](https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js) và bấm **Install** | Hình nền phủ kín, tự bật mỗi lần mở |
 | claude.ai trên iPhone / iPad | Cài app **Userscripts** cho Safari, rồi mở link script ở trên | Như trên |
 | claude.ai trên Android | Cài **Violentmonkey** trong Firefox, rồi mở link script | Như trên |
-| App Claude Desktop, tab **Code** | **+** → **Plugins** → **Add marketplace** → `nambuibtt/claude-themes` → cài **themes-for-claude** → gõ `/desk` | Dải cảnh trên ô chat, khung cảnh bên cạnh, viền tin nhắn theo màu theme |
+| App Claude Desktop, tab **Code** | **+** → **Plugins** → **Add marketplace** → `nambuibtt/claude-themes` → cài **themes-for-claude** → gõ `/desk` | Khung cảnh bên cạnh, viền tin nhắn theo màu theme |
 | App Claude Desktop, phủ kín cửa sổ | Làm theo [trang cài đặt từng bước](https://nambuibtt.github.io/claude-themes/setup.html) | Phủ kín cửa sổ, phải dán lại script mỗi lần mở app |
 
 Hướng dẫn chi tiết cho người mới, có phần xử lý sự cố: [HUONG-DAN.md](HUONG-DAN.md).
@@ -92,7 +92,7 @@ Hàm vẽ có sẵn: `world.tile`, `world.sprite`, `world.glyph`, `world.dot`, `
 
 ## Plugin cho tab Code
 
-Thư mục [`themes-for-claude/`](themes-for-claude/) là plugin cho Claude Code. Plugin chỉ được vẽ ở dải trên ô chat, khung bên cạnh và quanh tin nhắn, nên không phủ kín được như bản trên web. Chi tiết ở [themes-for-claude/README.md](themes-for-claude/README.md).
+Thư mục [`themes-for-claude/`](themes-for-claude/) là plugin cho Claude Code. Plugin chỉ được vẽ ở khung bên cạnh và quanh tin nhắn, nên không phủ kín được như bản trên web. Chi tiết ở [themes-for-claude/README.md](themes-for-claude/README.md).
 
 ## Cấu trúc thư mục
 

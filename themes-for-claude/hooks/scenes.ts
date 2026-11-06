@@ -3,7 +3,7 @@
 // that each carry one glyph. Seeded randomness keeps every redraw identical,
 // so a re-render never restarts the animation with a new layout.
 
-export type Layout = 'band' | 'side' | 'thumb'
+export type Layout = 'side' | 'thumb'
 
 export type Theme = {
   id: string
@@ -791,14 +791,13 @@ const BUILDERS: Record<string, [glyphs: string, draw: (sc: Scene) => void]> = {
 }
 
 const SIZES: Record<Layout, [w: number, h: number, cell: number]> = {
-  band: [1200, 132, 12],
   side: [420, 900, 12],
   thumb: [168, 96, 6],
 }
 
 const cache = new Map<string, string>()
 
-/** The SVG document for a theme in one of the three layouts; memoized. */
+/** The SVG document for a theme in one of the two layouts; memoized. */
 export function scene(themeId: string, layout: Layout): string {
   const key = `${themeId}:${layout}`
   const hit = cache.get(key)

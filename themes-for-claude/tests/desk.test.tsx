@@ -53,34 +53,30 @@ function engine(on: On, kept?: unknown) {
 const desk = (args: string) =>
   ({ command: 'desk', args, origin: { kind: 'composer' }, presentation: { isFullscreen: false, columns: 100 } }) as const
 
-test('/desk koi switches the theme, keeps it, and draws the koi strip where SVG exists', async ($, on) => {
+test('/desk koi switches the theme, keeps it, and draws no strip above the prompt', async ($, on) => {
   const store = engine(on)
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
   const ran = await $.command.run(desk('koi'))
   expect(ran.text).toContain('Lotus Koi')
-  expect(store.get('prefs')).toEqual({ theme: 'koi', band: true, tint: true })
+  expect(store.get('prefs')).toEqual({ theme: 'koi', tint: true })
 
+  // The strip above the prompt was removed: the engine's own row is all that draws there.
   for (const surface of SURFACES) {
     const ui = await $.ui.mount(band(surface))
-    const svg = await ui.find({ type: 'Svg' })
-    if (surface === 'terminal') expect(svg).toBeUndefined()
-    else expect(String(svg?.props.alt)).toContain('Lotus Koi')
+    expect(await ui.find({ type: 'Svg' })).toBeUndefined()
     expect((await ui.find({ type: 'Text', text: /engine/ }))?.text).toBe('engine')
     await ui.unmount()
   }
 })
 
 test('a theme kept from an earlier session comes back, and Vietnamese names work', async ($, on) => {
-  const store = engine(on, { theme: 'moon', band: false, tint: true })
+  // Saved by version 1.0, which still had the strip's `band` flag.
+  const store = engine(on, { theme: 'moon', band: true, tint: true })
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
-  const off = await $.ui.mount(band('desktop'))
-  expect(await off.find({ type: 'Svg' })).toBeUndefined()
-  await off.unmount()
-
   await $.command.run(desk('sứa'))
-  expect(store.get('prefs')).toEqual({ theme: 'jelly', band: false, tint: true })
+  expect(store.get('prefs')).toEqual({ theme: 'jelly', tint: true })
 
   const unknown = await $.command.run(desk('pizza'))
   expect(unknown.text).toContain('Không có theme')

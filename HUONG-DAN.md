@@ -24,7 +24,7 @@ Cách đọc phím tắt: `Cmd + Option + I` nghĩa là giữ **Cmd** và **Opti
 | Bạn dùng | Cách | Được gì | Có phải làm lại không |
 |---|---|---|---|
 | App Claude Desktop (tab Chat hoặc Code) | [Mục 3](#3-app-claude-desktop-phủ-kín-cửa-sổ): chạy script qua Developer Mode | Khung cảnh phủ kín phía sau cuộc trò chuyện | Có, mỗi lần mở app |
-| App Claude Desktop, tab Code | [Mục 4](#4-app-claude-desktop-plugin-desk-trong-tab-code): plugin `/desk` | Dải cảnh trên ô chat, khung cảnh bên cạnh, viền tin nhắn | Không |
+| App Claude Desktop, tab Code | [Mục 4](#4-app-claude-desktop-plugin-desk-trong-tab-code): plugin `/desk` | Khung cảnh bên cạnh, viền tin nhắn | Không |
 | claude.ai trên Chrome / Edge / Firefox | [Mục 5](#5-claudeai-trên-trình-duyệt-máy-tính): Tampermonkey | Phủ kín | Không |
 | claude.ai trên iPhone / Android | [Mục 6](#6-điện-thoại) | Phủ kín | Không |
 
@@ -122,13 +122,13 @@ Theme tối (Lotus Koi, Deep Glow, Night Forest, Starry Night, Terminal Glow) h�
 
 ### 3.7. Dùng cùng plugin `/desk`
 
-Nếu bật cả cách này lẫn plugin ở mục 4, sẽ có thêm một dải cảnh trên ô chat. Gõ `/desk band` trong tab Code để tắt dải đó.
+Bật cùng lúc cách này và plugin ở mục 4 cũng được: plugin không vẽ thêm gì trên ô chat, nên không bị trùng cảnh.
 
 ---
 
 ## 4. App Claude Desktop: plugin `/desk` trong tab Code
 
-Cài một lần là tự chạy. Plugin chỉ vẽ ở dải trên ô chat, khung bên cạnh và quanh tin nhắn. Muốn phủ kín thì dùng mục 3.
+Cài một lần là tự chạy. Plugin chỉ vẽ ở khung bên cạnh và quanh tin nhắn. Muốn phủ kín thì dùng mục 3.
 
 ### 4.1. Cài
 
@@ -148,7 +148,6 @@ Trong terminal: `claude plugin install themes-for-claude --marketplace nambuibtt
 | `/desk co`, `/desk viet nam` | Theme Việt Nam |
 | `/desk trang`, `/desk sua`, `/desk may` | Đổi bằng tên tiếng Việt không dấu |
 | `/desk side` | Mở khung cảnh bên cạnh |
-| `/desk band` | Bật / tắt dải cảnh trên ô chat |
 | `/desk tint` | Bật / tắt viền màu tin nhắn |
 | `/desk off` | Tắt |
 

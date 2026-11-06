@@ -1,7 +1,7 @@
 {
   "name": "themes-for-claude",
-  "version": "1.0.0",
-  "description": "Claude themes for the Claude Code tab: animated ASCII background, moving strip over the prompt, a tall side pane and colour-matched message frames. Type /desk.",
+  "version": "1.1.0",
+  "description": "Claude themes for the Claude Code tab: animated ASCII background, a tall side pane and colour-matched message frames. Type /desk.",
   "author": {
     "name": "nambuibtt"
   },
