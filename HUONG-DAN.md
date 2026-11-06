@@ -40,7 +40,6 @@ Muốn tự bật mỗi lần mà vẫn có cửa sổ riêng như app? Mở cla
 |---|---|
 | Script (trình duyệt, điện thoại, DevTools) | https://raw.githubusercontent.com/nambuibtt/ascii-desk-themes/main/ascii-desk-themes.user.js |
 | Trang cài đặt từng bước cho app Desktop | https://nambuibtt.github.io/ascii-desk-themes/setup.html |
-| Trang xem thử | https://nambuibtt.github.io/ascii-desk-themes/ |
 | Tên marketplace của plugin | `nambuibtt/ascii-desk-themes` |
 
 ---

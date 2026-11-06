@@ -2,10 +2,6 @@
 
 Biến khung chat của Claude thành một khung cảnh ASCII chuyển động. Có sẵn chín cảnh: bầu trời xanh, vịnh rùa biển, hồ sen cá koi, biển sâu phát sáng, đoàn thuyền giấy, rừng đêm, trời sao, terminal phát sáng và cờ Việt Nam. Miễn phí, mã nguồn mở, không gửi dữ liệu đi đâu.
 
-![Bảng chọn theme của ASCII Desk Themes](preview.png)
-
-Xem thử trên trình duyệt, không cần cài gì: https://nambuibtt.github.io/ascii-desk-themes/
-
 ## Chọn cách cài
 
 | Bạn dùng Claude ở đâu | Làm gì | Kết quả |
@@ -97,13 +93,11 @@ Thư mục [`ascii-desk-themes/`](ascii-desk-themes/) là plugin cho Claude Code
 ## Cấu trúc thư mục
 
 ```
-ascii-desk-themes.user.js   userscript cho claude.ai, cũng dùng cho trang demo
-index.html                  trang demo
+ascii-desk-themes.user.js   userscript chạy trực tiếp trên claude.ai
 setup.html                  trang cài đặt từng bước cho app Desktop
 HUONG-DAN.md                hướng dẫn chi tiết
 ascii-desk-themes/          plugin cho tab Code
 .claude-plugin/             marketplace để app Desktop cài plugin từ repo này
-preview.png                 ảnh minh hoạ
 ```
 
 ## Giới hạn
