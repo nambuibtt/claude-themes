@@ -1,0 +1,12 @@
+{
+  "name": "ascii-desk-themes",
+  "version": "1.0.0",
+  "description": "Animated ASCII scenery for the Claude Code tab: a moving strip over the prompt, a tall side pane and colour-matched message frames. Type /desk.",
+  "author": {
+    "name": "nambuibtt"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/nambuibtt/ascii-desk-themes",
+  "repository": "https://github.com/nambuibtt/ascii-desk-themes",
+  "types": "./types/index.d.ts"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "nambuibtt",
+  "owner": {
+    "name": "nambuibtt"
+  },
+  "description": "ASCII wallpapers for Claude, by Nam Bui.",
+  "plugins": [
+    {
+      "name": "ascii-desk-themes",
+      "source": "./ascii-desk-themes",
+      "description": "Animated ASCII scenery for the Claude Code tab: a moving strip over the prompt, a tall side pane and colour-matched message frames. Type /desk.",
+      "version": "1.0.0"
+    }
+  ]
+}
