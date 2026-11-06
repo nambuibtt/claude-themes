@@ -53,13 +53,13 @@ function engine(on: On, kept?: unknown) {
 const desk = (args: string) =>
   ({ command: 'desk', args, origin: { kind: 'composer' }, presentation: { isFullscreen: false, columns: 100 } }) as const
 
-test('/desk koi switches the theme, keeps it, and draws no strip above the prompt', async ($, on) => {
+test('/desk fuji switches the theme, keeps it, and draws no strip above the prompt', async ($, on) => {
   const store = engine(on)
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
-  const ran = await $.command.run(desk('koi'))
-  expect(ran.text).toContain('Lotus Koi')
-  expect(store.get('prefs')).toEqual({ theme: 'koi', tint: true })
+  const ran = await $.command.run(desk('fuji'))
+  expect(ran.text).toContain('Núi Phú Sĩ')
+  expect(store.get('prefs')).toEqual({ theme: 'fuji', tint: true })
 
   // The strip above the prompt was removed: the engine's own row is all that draws there.
   for (const surface of SURFACES) {
@@ -72,17 +72,17 @@ test('/desk koi switches the theme, keeps it, and draws no strip above the promp
 
 test('a theme kept from an earlier session comes back, and Vietnamese names work', async ($, on) => {
   // Saved by version 1.0, which still had the strip's `band` flag.
-  const store = engine(on, { theme: 'moon', band: true, tint: true })
+  const store = engine(on, { theme: 'namsan', band: true, tint: true })
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
-  await $.command.run(desk('sứa'))
-  expect(store.get('prefs')).toEqual({ theme: 'jelly', tint: true })
+  await $.command.run(desk('tà xùa'))
+  expect(store.get('prefs')).toEqual({ theme: 'taxua', tint: true })
 
   const unknown = await $.command.run(desk('pizza'))
   expect(unknown.text).toContain('Không có theme')
 
-  // The flag theme answers to its Vietnamese names; "co" must not fall through to "code".
-  for (const [typed, id] of [['vietnam', 'vn'], ['Việt Nam', 'vn'], ['co', 'vn'], ['code', 'code']] as const) {
+  // Themes answer to their Vietnamese names, with or without accents.
+  for (const [typed, id] of [['Phú Sĩ', 'fuji'], ['thỏ bảy màu', 'bunny'], ['hải ly', 'beaver'], ['seoul', 'namsan'], ['hoa', 'taxua']] as const) {
     await $.command.run(desk(typed))
     expect((store.get('prefs') as { theme: string }).theme).toBe(id)
   }
@@ -92,7 +92,7 @@ test('the picker applies a theme on press, on every surface', async ($, on) => {
   const store = engine(on)
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
-  for (const [surface, id] of [['terminal', 'boats'], ['desktop', 'lagoon'], ['vscode', 'fireflies'], ['mobile', 'code']] as const) {
+  for (const [surface, id] of [['terminal', 'beaver'], ['desktop', 'bunny'], ['vscode', 'namsan'], ['mobile', 'taxua']] as const) {
     const ui = await $.ui.mount(pane('desk-picker', surface))
     await ui.press({ key: id })
     expect(((store.get('prefs')) as { theme: string }).theme).toBe(id)
@@ -114,7 +114,7 @@ test('messages get a themed frame until tint is turned off', async ($, on) => {
     const ui = await $.ui.mount(userMessage(surface))
     const box = await ui.find({ type: 'Box' })
     expect(box?.props.borderStyle).toBe('round')
-    expect(box?.props.borderColor).toBe('#5aa9e6')
+    expect(box?.props.borderColor).toBe('#e86f8c')
     expect((await ui.find({ type: 'Text', text: /engine/ }))?.text).toBe('engine')
     await ui.unmount()
   }
@@ -130,7 +130,7 @@ test('the side pane shows the tall scene, or says the wallpaper is off', async (
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
 
   const side = await $.ui.mount(pane('desk-scene', 'desktop'))
-  expect(String((await side.find({ type: 'Svg' }))?.props.alt)).toContain('Blue Sky')
+  expect(String((await side.find({ type: 'Svg' }))?.props.alt)).toContain('Núi Phú Sĩ')
   await side.unmount()
 
   await $.command.run(desk('off'))

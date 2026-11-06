@@ -4,7 +4,7 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { Prefs } from '../types'
 import { THEMES, byId, findTheme, scene } from './scenes'
 
-const DEFAULTS: Prefs = { theme: 'cloud', tint: true }
+const DEFAULTS: Prefs = { theme: 'fuji', tint: true }
 const STORE_KEY = 'prefs'
 // Change the tag when Prefs changes: it declines what an earlier version kept.
 const prefs = atom({ plugin: 'themes-for-claude', key: 'prefs' } as const, DEFAULTS, { shape: 'prefs-2' })
@@ -36,7 +36,7 @@ export const register: Register = on => {
     if (saved !== undefined) await update($, prefs, () => restore(saved))
     await $.command.register({
       name: 'desk',
-      description: 'Khung cảnh ASCII: mở bảng chọn, hoặc /desk <theme> (koi, moon, off…)',
+      description: 'Khung cảnh ASCII: mở bảng chọn, hoặc /desk <theme> (fuji, tho, namsan, off…)',
       argumentHint: '[theme | off | side | tint]',
     })
 

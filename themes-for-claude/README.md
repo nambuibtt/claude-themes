@@ -1,6 +1,6 @@
 # themes-for-claude (plugin cho Claude Code)
 
-Khung cảnh ASCII chuyển động cho **tab Code trong app Claude Desktop**. Plugin cũng chạy trong VS Code và trên điện thoại khi bạn xem một phiên Claude Code. Có chín theme giống bản cho claude.ai: Terminal Glow, Blue Sky, Turtle Bay, Lotus Koi, Deep Glow, Paper Fleet, Night Forest, Starry Night, Việt Nam.
+Khung cảnh ASCII chuyển động cho **tab Code trong app Claude Desktop**. Plugin cũng chạy trong VS Code và trên điện thoại khi bạn xem một phiên Claude Code. Có năm theme giống bản cho claude.ai: Hải Ly Hồng, Thỏ Bảy Màu, Tháp Namsan, Núi Phú Sĩ, Tà Xùa.
 
 Plugin vẽ ở hai chỗ:
 
@@ -20,7 +20,7 @@ Bằng terminal: `claude plugin install themes-for-claude --marketplace nambuibt
 | Lệnh | Tác dụng |
 |---|---|
 | `/desk` | Mở bảng chọn có ảnh xem trước từng theme |
-| `/desk koi`, `/desk trang`, `/desk co` | Đổi theme theo tên hoặc tên tiếng Việt không dấu |
+| `/desk fuji`, `/desk tho`, `/desk ta xua` | Đổi theme theo tên hoặc tên tiếng Việt không dấu |
 | `/desk off` | Tắt |
 | `/desk side` | Mở khung cảnh bên cạnh |
 | `/desk tint` | Bật / tắt viền màu quanh tin nhắn |
@@ -35,7 +35,7 @@ Plugin chỉ vẽ ở khung bên cạnh và quanh tin nhắn, nên plugin không
 
 ```
 hooks/register.tsx   lệnh /desk, bảng chọn, khung bên cạnh, viền tin nhắn
-hooks/scenes.ts      chín khung cảnh dạng SVG tự chuyển động
+hooks/scenes.ts      năm khung cảnh dạng SVG tự chuyển động
 types/index.d.ts     kiểu dữ liệu của lựa chọn đã lưu
 tests/desk.test.tsx  kiểm thử trên terminal, desktop, VS Code, điện thoại
 ```

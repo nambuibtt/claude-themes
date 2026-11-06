@@ -4,7 +4,7 @@
 
 *Claude theme · Claude background · Claude wallpaper · hình nền Claude · đổi giao diện Claude · Claude chat theme · Claude Desktop theme · Claude Code theme*
 
-Biến khung chat của Claude thành một khung cảnh ASCII chuyển động. Có sẵn chín cảnh: bầu trời xanh, vịnh rùa biển, hồ sen cá koi, biển sâu phát sáng, đoàn thuyền giấy, rừng đêm, trời sao, terminal phát sáng và cờ Việt Nam. Miễn phí, mã nguồn mở, không gửi dữ liệu đi đâu.
+Biến khung chat của Claude thành một khung cảnh ASCII chuyển động. Có sẵn năm cảnh: hải ly hồng, thỏ bảy màu dưới cầu vồng, tháp Namsan (Seoul), núi Phú Sĩ và biển mây cánh đồng hoa Tà Xùa. Miễn phí, mã nguồn mở, không gửi dữ liệu đi đâu.
 
 ## Chọn cách cài
 
@@ -20,21 +20,17 @@ Hướng dẫn chi tiết cho người mới, có phần xử lý sự cố: [HU
 
 App Claude cài từ App Store / CH Play không cho chạy thêm gì. Trên điện thoại, hãy mở claude.ai bằng trình duyệt.
 
-## Chín theme
+## Năm theme
 
 | Theme | Lệnh nhanh | Khung cảnh |
 |---|---|---|
-| Terminal Glow | `/theme code` | Nền terminal tối, tia sáng cam, dòng code trôi |
-| Blue Sky | `/theme may` | Trời xanh, mây ghép từ ký tự trôi ngang |
-| Turtle Bay | `/theme rua` | Nước xanh trong, rùa biển, đàn cá, san hô |
-| Lotus Koi | `/theme koi` | Hồ cá koi, lá sen, gợn nước |
-| Deep Glow | `/theme sua` | Biển sâu, sứa phát sáng trôi lên |
-| Paper Fleet | `/theme thuyen` | Thuyền giấy nhấp nhô trên sóng |
-| Night Forest | `/theme dom dom` | Rừng đêm, đom đóm lập loè |
-| Starry Night | `/theme trang` | Trăng, sao, sao băng trên mặt biển |
-| Việt Nam | `/theme co` | Cờ đỏ sao vàng bay trên nền trời bình minh và núi đá vôi |
+| Hải Ly Hồng | `/theme hai ly` | Chú hải ly hồng ngồi trên khúc gỗ, tim bay lên, mặt nước gợn sóng |
+| Thỏ Bảy Màu | `/theme tho` | Thỏ trắng nhảy trên đồng cỏ dưới cầu vồng bảy màu |
+| Tháp Namsan | `/theme namsan` | Seoul về đêm, tháp Namsan đổi màu đèn, cửa sổ thành phố lấp lánh |
+| Núi Phú Sĩ | `/theme fuji` | Núi tuyết lúc bình minh, cổng torii trên hồ, hoa anh đào rơi |
+| Tà Xùa | `/theme ta xua` | Biển mây Tà Xùa, sống núi nhô lên, cánh đồng hoa đung đưa, bướm bay |
 
-Trong tab Code của app Desktop, thay `/theme` bằng `/desk` (ví dụ `/desk koi`).
+Trong tab Code của app Desktop, thay `/theme` bằng `/desk` (ví dụ `/desk fuji`).
 
 ## Dùng trên claude.ai
 
@@ -44,7 +40,7 @@ Trong tab Code của app Desktop, thay `/theme` bằng `/desk` (ví dụ `/desk 
 | `←` `→` | Xem trước từng theme |
 | `Enter` | Áp dụng. Dòng `/theme` không bị gửi cho Claude |
 | `Esc` | Đóng, giữ theme đang dùng |
-| `/theme koi`, `/theme trang`, `/theme off` | Đổi thẳng theo tên, hoặc tắt |
+| `/theme fuji`, `/theme tho`, `/theme off` | Đổi thẳng theo tên, hoặc tắt |
 | `Alt + T` | Mở / đóng bảng chọn |
 | Nút ô vuông nhiều màu ở cạnh phải | Mở bảng chọn, tiện trên điện thoại |
 
@@ -57,7 +53,7 @@ Trong bảng chọn có thêm:
 - **Chuyển động**: tắt để nền đứng yên, đỡ tốn pin.
 - **Nút nổi**: ẩn hoặc hiện nút ở cạnh phải.
 
-Theme tối (Lotus Koi, Deep Glow, Night Forest, Starry Night, Terminal Glow) hợp với giao diện Dark của claude.ai, theme sáng hợp với Light. Nếu không khớp, script tự thêm lớp mờ cho chữ dễ đọc.
+Tháp Namsan là theme tối, hợp với giao diện Dark của claude.ai; bốn theme còn lại là theme sáng, hợp với Light. Nếu không khớp, script tự thêm lớp mờ cho chữ dễ đọc.
 
 ## Bên trong hoạt động thế nào
 
@@ -122,7 +118,7 @@ Muốn thêm theme hay gặp lỗi? Mở [issue](https://github.com/nambuibtt/cl
 <details>
 <summary><b>English</b></summary>
 
-**Claude Themes** puts an animated ASCII scene behind the Claude chat. Nine scenes ship with it: blue sky, turtle bay, lotus koi pond, deep-sea glow, paper fleet, night forest, starry night, terminal glow and the Vietnamese flag.
+**Claude Themes** puts an animated ASCII scene behind the Claude chat. Five scenes ship with it: a pink beaver, a rainbow bunny, Seoul's Namsan tower at night, Mount Fuji with falling cherry blossoms, and the sea of clouds and flower fields of Tà Xùa.
 
 - **claude.ai in a browser** (desktop, iPhone Safari, Android Firefox): install a userscript manager, then open the [script link](https://raw.githubusercontent.com/nambuibtt/claude-themes/main/claude-themes.user.js). Type `/theme` or press `Alt+T`.
 - **Claude Desktop, Code tab**: **+** → **Plugins** → **Add marketplace** `nambuibtt/claude-themes` → install **themes-for-claude**, then type `/desk`.

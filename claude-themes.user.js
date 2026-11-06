@@ -2,7 +2,7 @@
 // @name         Claude Themes
 // @name:vi      Claude Themes – khung cảnh ASCII cho claude.ai
 // @namespace    https://github.com/nambuibtt/claude-themes
-// @version      1.0.0
+// @version      2.0.0
 // @description  Claude themes: animated background wallpapers behind the claude.ai chat. Type /theme to pick one.
 // @description:vi Khung cảnh ASCII chuyển động phía sau khung chat claude.ai. Gõ /theme để chọn.
 // @author       Nam Bui
@@ -36,10 +36,25 @@
   'use strict';
   // A clear line in the console, so a run from DevTools shows it worked.
   const say = (text) => console.info('%c' + text, 'color:#2f8a58;font-weight:bold');
-  if (window.__claudeThemes) {
-    say('Claude Themes đang chạy rồi. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
-    return;
+  const VERSION = '2.0.0';
+  const prev = window.__claudeThemes;
+  if (prev) {
+    if (prev.version === VERSION) {
+      say('Claude Themes đang chạy rồi. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');
+      return;
+    }
+    // A different copy is running: take its place.
+    if (typeof prev.destroy === 'function') prev.destroy();
+    else {
+      // Version 1.0 had no way to stop itself, so the page must be reloaded first.
+      say('Đang chạy bản Claude Themes cũ. Tải lại cửa sổ (Cmd+R hoặc Ctrl+R) rồi dán script này lại một lần nữa.');
+      return;
+    }
   }
+  // Every listener hangs off this signal, so destroy() can remove them all.
+  const life = new AbortController();
+  const on = { signal: life.signal };
+  const onCap = { signal: life.signal, capture: true };
 
   /* ------------------------------------------------------------------ utils */
 
@@ -313,838 +328,571 @@
     };
   }
 
-  const TURTLE_PAL = {
-    S: ['#2f8a58', '#1f6a42'],
-    s: ['#a3d06c', '#78a847'],
-    h: ['#8dd27f', '#5ba454'],
-    f: ['#72bf76', '#4d9a52'],
-    e: ['#17322a', null, ''],
-  };
-  const TURTLE = [
-    sprite(['      ff      ', '    SSSSSf    ', '  SsSSsSSS he ', ' SSsSSsSSSShhh', '  SsSSsSSS hh ', '    SSSSSf    ', '      ff      '], TURTLE_PAL),
-    sprite(['        ff    ', '    SSSSSff   ', '  SsSSsSSS he ', ' SSsSSsSSSShhh', '  SsSSsSSS hh ', '    SSSSSff   ', '        ff    '], TURTLE_PAL),
-  ];
-
-  const FISH = sprite(['t yyy ', 'tyyyey', 't yyy '], {
-    y: ['#ffd23f', '#f2a900'],
-    t: ['#ffb000', '#d98a00'],
-    e: ['#1b2f4a', null, ''],
-  });
-
-  const CORALS = [
-    ['#ff7d8c', '#d6566a', '#ffb3bd'],
-    ['#ff9f5a', '#d77a33', '#ffc79c'],
-    ['#c79bff', '#9c70e0', '#e2cdff'],
-    ['#ff6fb3', '#d9468d', '#ffacd4'],
-  ];
-
-  const KOI = [
-    sprite(['     f     ', 't  ooWWoo  ', 'ttoWWooWWoo', '   ooWWoo  ', '     f     '], null),
-    sprite(['     f     ', '   ooWWoo  ', 'ttoWWooWWoo', 't  ooWWoo  ', '     f     '], null),
-  ];
-  const koiPal = (o, W, t) => ({ o, W, t: [t, o[1], '', 0.85], f: [W[0], W[1], '', 0.6] });
-  const KOI_PALS = [
-    koiPal(['#e8533a', '#b83a25'], ['#fff6ec', '#e3d2bf'], '#ff8a6b'),
-    koiPal(['#ffb21f', '#d98e00'], ['#ffe39a', '#e2c066'], '#ffc94d'),
-    koiPal(['#ff7b2e', '#cf5617'], ['#2b2b2b', '#4a4a4a'], '#ff9a5c'),
-    koiPal(['#f4f3ee', '#cfcdc4'], ['#ffffff', '#dddddd'], '#ffffff'),
-  ];
-
-  const JELLY = [
-    sprite(['   bbb   ', ' bBBBBBb ', 'bBBbBbBBb', 'b b b b b', ' t  t  t ', '  t  t  t', ' t  t  t ', '  t  t   '], null),
-    sprite(['   bbb   ', '  bBBBb  ', ' bBbBbBb ', '  b b b  ', '  t t t  ', '  t t t  ', '   t t t ', '  t t t  ', '   t t   '], null),
-  ];
-  const JELLY_COLS = [
-    ['#ff8fc8', '#ffd1e8'],
-    ['#b49cff', '#e0d6ff'],
-    ['#74dcff', '#c9f2ff'],
-    ['#ffb08a', '#ffe0cf'],
-  ];
-  const jellyPal = (m, l) => ({ B: [m, l, null, 0.9], b: [l, m, null, 0.8], t: [null, l, '|', 0.7] });
-
-  const BOAT = sprite(['    m    ', '    mM   ', '   mmMM  ', '  mmmMMM ', 'hhhhhhhhh', ' hhhhhhh ', '  hhhhh  '], null);
-  const boatPal = (a, b, c) => ({ m: [a, c], M: [b, c], h: [a, c] });
-  const BOAT_PALS = [
-    boatPal('#ffffff', '#e4ecef', '#b9c7ce'),
-    boatPal('#fff3c4', '#f0e0a0', '#cdb877'),
-    boatPal('#ffe1ea', '#f4c8d6', '#d39bb0'),
-  ];
-
-  const CODE_LINES = [
-    'const theme = "ascii";',
-    '$ npm run dev',
-    '=> ready in 312ms',
-    'git commit -m "wip"',
-    '<Chat theme={t} />',
-    'fn render() {',
-    '}',
-    '// TODO: sleep',
-    'ok',
-    '[ok] 42 tests passed',
-  ];
-
   /* ----------------------------------------------------------------- themes */
 
   const THEMES = [];
 
-  THEMES.push({
-    id: 'code',
-    name: 'Terminal Glow',
-    dark: true,
-    alias: ['claude', 'terminal', 'spark'],
-    glyphs: '{}<>/$_;:=+*',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#24211f', '#1b1a18', '#141312']);
-      rglow(c, w * 0.7, h * 0.42, Math.max(w, h) * 0.45, '#d97757', 0.13);
-    },
-    init(w) {
-      const s = w.s;
-      const line = (any) => {
-        const txt = pick(CODE_LINES);
-        return { txt, x: rint(0, Math.max(0, w.cols - txt.length)), y: any ? rnd(0, w.rows) : w.rows + rnd(0, 4), v: rnd(0.3, 0.8), a: rnd(0.25, 0.6) };
-      };
-      s.line = line;
-      s.lines = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 220, 3, 26)) }, () => line(true));
-      s.embers = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 260, 4, 30)) }, () => ({ x: rnd(0, w.cols), y: rnd(0, w.rows), v: rnd(0.6, 1.6), ph: rnd(0, 6) }));
-    },
-    frame(w, dt) {
-      const s = w.s;
-      for (let i = 0; i < s.lines.length; i++) {
-        const l = s.lines[i];
-        l.y -= l.v * dt;
-        if (l.y < -1) s.lines[i] = s.line(false);
-        for (let k = 0; k < l.txt.length; k++) if (l.txt[k] !== ' ') w.glyph(l.x + k, l.y, l.txt[k], '#6b625a', l.a);
-      }
-      for (const e of s.embers) {
-        e.y -= e.v * dt;
-        e.x += Math.sin(w.t * 1.5 + e.ph) * 0.4 * dt;
-        if (e.y < -1) {
-          e.y = w.rows + 1;
-          e.x = rnd(0, w.cols);
-        }
-        w.dot(e.x, e.y, '#ff9a66', 0.25 + 0.45 * Math.abs(Math.sin(w.t * 2 + e.ph)), 0.32);
-      }
-      // Pulsing pixel spark.
-      const cx = Math.round(w.cols * 0.7);
-      const cy = Math.round(w.rows * 0.42);
-      const R = clamp(Math.round(Math.min(w.cols, w.rows) * 0.12), 3, 9);
-      const rot = w.t * 0.06;
-      const seen = new Set();
-      w.glow(cx, cy, R * 2.4, '#d97757', 0.32 + 0.08 * Math.sin(w.t * 2));
-      for (let k = 0; k < 10; k++) {
-        const a = rot + (k / 10) * Math.PI * 2;
-        const L = R + Math.round(Math.sin(w.t * 1.7 + k * 2.1) * 1.3) - (k % 2);
-        for (let i = 1; i <= L; i++) {
-          const x = cx + Math.round(Math.cos(a) * i);
-          const y = cy + Math.round(Math.sin(a) * i);
-          const key = x * 4096 + y;
-          if (seen.has(key)) continue;
-          seen.add(key);
-          w.tile(x, y, i === L ? '#f4a27e' : '#d97757', '#a24e2f', w.ch(k, i, 3));
-        }
-      }
-      w.tile(cx, cy, '#e98a63', '#a24e2f', '*');
-    },
-  });
+  const CLOUD_PINK = { c: ['#ffffff', '#f3c6d6'], e: ['#fff0f6', '#f0bfd2'] };
+  const CLOUD_DAWN = { c: ['#fff6ef', '#f1cdbd'], e: ['#ffe9de', '#ecc0ae'] };
+
+  // A particle list sized to the screen.
+  const many = (w, per, lo, hi, make) => Array.from({ length: Math.round(clamp((w.cols * w.rows) / per, lo, hi)) }, make);
+
+  function driftClouds(w, list, dt, aScale = 1) {
+    for (const c of list) {
+      c.x += c.v * dt;
+      if (c.x > w.cols + 1) c.x = -c.sp.w - rnd(0, 10);
+      w.sprite(c.sp, c.x, c.y, { a: c.a * aScale, seed: c.seed });
+    }
+  }
+
+  // Ripples drifting left and right on alternate rows, from row y0 down.
+  function ripples(w, y0, color, seed, a = 0.6) {
+    const t = w.t;
+    for (let y = y0; y < w.rows; y++) {
+      const dir = y % 2 ? 1 : -1;
+      for (let x = 0; x < w.cols; x++) if (hash(Math.floor(x + t * 0.8 * dir), y, seed) < 0.07) w.glyph(x, y, '~', color, a);
+    }
+  }
+
+  function skyAndWater(c, w, h, hy, sky, sea) {
+    const s = c.createLinearGradient(0, 0, 0, hy);
+    sky.forEach((col, i) => s.addColorStop(i / (sky.length - 1), col));
+    c.fillStyle = s;
+    c.fillRect(0, 0, w, hy);
+    const g = c.createLinearGradient(0, hy, 0, h);
+    sea.forEach((col, i) => g.addColorStop(i / (sea.length - 1), col));
+    c.fillStyle = g;
+    c.fillRect(0, hy, w, h - hy);
+  }
+
+  /* ------------------------------------------------------- Pink Beaver */
+
+  const BEAVER_PAL = {
+    e: ['#ff9ec4', '#f07aa8'],
+    E: ['#ffd0e1', '#f5a6c4', ''],
+    p: ['#ff9ec4', '#f07aa8'],
+    K: ['#3a2430', null, ''],
+    w: ['#ffffff', null, ''],
+    k: ['#ff9ec4', '#3a2430', '-'],
+    b: ['#ff7fa8', '#ee6b96', ''],
+    n: ['#9b4562', null, ''],
+    T: ['#ffffff', '#d9d0d4', ''],
+    h: ['#ffb8d3', '#f07aa8'],
+    f: ['#ec7fa5', '#cc5f86', ''],
+    t: ['#c97692', '#a2566f', '#'],
+  };
+  const BEAVER_ROWS = [
+    '  ee        ee  ',
+    ' eEEe      eEEe ',
+    '  pppppppppppp  ',
+    ' pppppppppppppp ',
+    'pppKwppppppKwppp',
+    'pppKKppppppKKppp',
+    'pbbpppnnnnpppbbp',
+    ' ppppppTTpppppp ',
+    '  pppppTTppppp  ',
+    '   hhpppppphh   ',
+    '  pppppppppppp  ',
+    '  pppppppppppp  ',
+    '   ff      ff   ',
+  ];
+  const BEAVER = sprite(BEAVER_ROWS, BEAVER_PAL);
+  const BEAVER_BLINK = sprite(
+    BEAVER_ROWS.map((r, j) => (j === 4 ? 'pppkkppppppkkppp' : j === 5 ? 'pppppppppppppppp' : r)),
+    BEAVER_PAL,
+  );
+  const BEAVER_TAIL = sprite([' tt ', 'tttt', 'tttt', ' tt '], BEAVER_PAL);
+  const HEART = sprite([' h h ', 'hhhhh', ' hhh ', '  h  '], null);
+  const HEART_PALS = [
+    { h: ['#ff6f9f', '#e04f80', ''] },
+    { h: ['#ffa3c2', '#f07aa8', ''] },
+    { h: ['#ff8a8a', '#e26464', ''] },
+    { h: ['#ffc2d9', '#f59bbd', ''] },
+  ];
+
+  function beaverGeo(w) {
+    const horizon = Math.round(w.rows * 0.74);
+    const bx = Math.round(clamp(w.cols < 60 ? (w.cols - BEAVER.w) / 2 : w.cols * 0.64, 0, Math.max(0, w.cols - BEAVER.w)));
+    return { horizon, bx, by: horizon - 1 - BEAVER.h };
+  }
+
+  function heart(w, any, g) {
+    return { x: rnd(0, w.cols - 5), y: any ? rnd(0, g.horizon) : g.horizon + rnd(0, 4), v: rnd(0.5, 1.2), ph: rnd(0, 6), pal: pick(HEART_PALS), a: rnd(0.55, 0.95) };
+  }
 
   THEMES.push({
-    id: 'cloud',
-    name: 'Blue Sky',
+    id: 'beaver',
+    name: 'Hải Ly Hồng',
     dark: false,
-    alias: ['may', 'troi', 'sky', 'clouds'],
-    glyphs: 't%i:;tt%',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#86c3f2', '#b3dbf8', '#d9eefc']);
-      const g = c.createLinearGradient(0, 0, w, 0);
-      g.addColorStop(0, 'rgba(255,255,255,0)');
-      g.addColorStop(0.5, 'rgba(255,255,255,0.3)');
-      g.addColorStop(1, 'rgba(255,255,255,0)');
-      c.fillStyle = g;
-      c.fillRect(0, 0, w, h);
-    },
-    init(w) {
-      const s = w.s;
-      s.clouds = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 700, 3, 10)) }, () => cloud(w, true, CLOUD_DAY));
-      s.dust = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 200, 6, 40)) }, () => ({ x: rnd(0, w.cols), y: rnd(0, w.rows), v: rnd(0.2, 0.6), ph: rnd(0, 6) }));
-    },
-    frame(w, dt) {
-      const s = w.s;
-      for (const d of s.dust) {
-        d.y -= d.v * dt;
-        if (d.y < -1) {
-          d.y = w.rows + 1;
-          d.x = rnd(0, w.cols);
-        }
-        w.dot(d.x + Math.sin(w.t * 0.7 + d.ph) * 0.8, d.y, '#ffffff', 0.5, 0.22);
-      }
-      s.clouds.sort((a, b) => a.z - b.z);
-      for (let i = 0; i < s.clouds.length; i++) {
-        const c = s.clouds[i];
-        c.x += c.v * dt;
-        if (c.x > w.cols + 1) s.clouds[i] = cloud(w, false, CLOUD_DAY);
-        w.sprite(c.sp, c.x, c.y, { a: c.a, seed: c.seed });
-      }
-    },
-  });
-
-  function sandH(x, seed) {
-    return 2 + Math.round(0.8 + Math.sin(x * 0.13 + seed) * 0.9 + hash(x, 0, seed) * 0.8);
-  }
-
-  function turtle(w, any) {
-    const dir = Math.random() < 0.5 ? 1 : -1;
-    return { dir, x: any ? rnd(0, w.cols) : dir > 0 ? -15 : w.cols + 1, y0: rnd(2, w.rows * 0.6), v: rnd(1.2, 2), ph: rnd(0, 6) };
-  }
-
-  function school(w, any) {
-    const dir = Math.random() < 0.5 ? 1 : -1;
-    return {
-      dir,
-      x: any ? rnd(0, w.cols) : dir > 0 ? -12 : w.cols + 8,
-      y: rnd(3, w.rows * 0.7),
-      v: rnd(2.5, 4),
-      fish: Array.from({ length: rint(3, 6) }, () => ({ dx: rnd(-6, 6), dy: rnd(-3, 3), ph: rnd(0, 6) })),
-    };
-  }
-
-  THEMES.push({
-    id: 'lagoon',
-    name: 'Turtle Bay',
-    dark: false,
-    alias: ['rua', 'honu', 'bien', 'sea', 'turtle'],
-    glyphs: '~o.:*',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#6fdad4', '#34b6c4', '#1b86a3']);
-      rglow(c, w * 0.5, -h * 0.1, h * 0.9, '#ffffff', 0.25);
-    },
-    init(w) {
-      const s = w.s;
-      const C = w.cols;
-      const R = w.rows;
-      s.seed = rint(1, 1e5);
-      s.coral = Array.from({ length: Math.round(clamp(C / 12, 2, 10)) }, () => {
-        const x0 = rint(1, C - 2);
-        const cells = [];
-        for (let b = rint(2, 4); b > 0; b--) {
-          let x = x0 + rint(-2, 2);
-          const L = rint(2, 6);
-          for (let i = 0; i < L; i++) {
-            cells.push([x, i, i === L - 1]);
-            if (Math.random() < 0.3) x += pick([-1, 1]);
-          }
-        }
-        return { x0, cells, col: pick(CORALS) };
-      });
-      s.weed = Array.from({ length: Math.round(clamp(C / 8, 3, 16)) }, () => ({ x: rint(0, C - 1), h: rint(3, Math.max(4, Math.round(R * 0.28))), ph: rnd(0, 6) }));
-      s.turtles = Array.from({ length: C > 70 ? 2 : 1 }, () => turtle(w, true));
-      s.schools = Array.from({ length: C > 70 ? 3 : 2 }, () => school(w, true));
-      s.bubbles = Array.from({ length: Math.round(clamp(C / 5, 5, 30)) }, () => ({ x: rnd(0, C), y: rnd(0, R), v: rnd(1, 2.5), ph: rnd(0, 6) }));
-    },
-    under(w) {
-      const s = w.s;
-      for (let x = 0; x < w.cols; x++) {
-        const top = w.rows - sandH(x, s.seed);
-        for (let y = top; y < w.rows; y++) w.tile(x, y, y === top ? '#fae8bf' : '#f5dda4', '#dfc07c', w.ch(x, y, 5));
-      }
-      for (const c of s.coral) {
-        const base = w.rows - sandH(c.x0, s.seed) - 1;
-        for (const [x, up, tip] of c.cells) w.tile(x, base - up, tip ? c.col[2] : c.col[0], c.col[1], tip ? 'o' : w.ch(x, up, 6));
-      }
-    },
-    frame(w, dt) {
-      const s = w.s;
-      const ctx = w.ctx;
-      // Soft light rays.
-      ctx.fillStyle = '#ffffff';
-      for (let k = 0; k < 4; k++) {
-        const x0 = ((k + 0.5) / 4) * w.w + Math.sin(w.t * 0.2 + k) * 30;
-        const sp = w.w * 0.04;
-        ctx.globalAlpha = 0.05 + 0.035 * Math.sin(w.t * 0.5 + k * 2);
-        ctx.beginPath();
-        ctx.moveTo(x0 - sp, 0);
-        ctx.lineTo(x0 + sp, 0);
-        ctx.lineTo(x0 + sp * 3 - w.h * 0.3, w.h);
-        ctx.lineTo(x0 - sp * 2 - w.h * 0.3, w.h);
-        ctx.closePath();
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      for (const g of s.weed) {
-        const base = w.rows - sandH(g.x, s.seed) - 1;
-        for (let k = 0; k < g.h; k++) {
-          const off = Math.round(Math.sin(w.t * 1.2 + g.ph + k * 0.5) * (k / g.h) * 1.6);
-          w.tile(g.x + off, base - k, k > g.h - 2 ? '#6fd08c' : '#3daa6a', '#2a8752', w.ch(g.x, k, 8));
-        }
-      }
-      for (let i = 0; i < s.schools.length; i++) {
-        const sc = s.schools[i];
-        sc.x += sc.dir * sc.v * dt;
-        if (sc.x > w.cols + 10 || sc.x < -16) s.schools[i] = school(w, false);
-        for (const f of sc.fish) w.sprite(FISH, sc.x + f.dx, sc.y + f.dy + Math.sin(w.t * 2 + f.ph) * 0.5, { flip: sc.dir < 0, seed: 2 });
-      }
-      for (let i = 0; i < s.turtles.length; i++) {
-        const t = s.turtles[i];
-        t.x += t.dir * t.v * dt;
-        if (t.x > w.cols + 2 || t.x < -16) s.turtles[i] = turtle(w, false);
-        const fr = Math.floor(w.t * 2 + t.ph) % 2;
-        w.sprite(TURTLE[fr], t.x, t.y0 + Math.sin(w.t * 0.5 + t.ph) * 1.5, { flip: t.dir < 0, seed: 9 });
-      }
-      for (const b of s.bubbles) {
-        b.y -= b.v * dt;
-        if (b.y < -1) {
-          b.y = w.rows + rnd(0, 5);
-          b.x = rnd(0, w.cols);
-        }
-        w.glyph(b.x + Math.sin(w.t * 2 + b.ph) * 0.6, b.y, b.v > 1.8 ? 'o' : '°', '#effffd', 0.65);
-      }
-    },
-  });
-
-  THEMES.push({
-    id: 'koi',
-    name: 'Lotus Koi',
-    dark: true,
-    alias: ['ca', 'ca koi', 'ho', 'pond'],
-    glyphs: '~:.o',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#13706a', '#0d5458', '#093b42']);
-      rglow(c, w * 0.3, h * 0.3, Math.max(w, h) * 0.5, '#3fd1b4', 0.12);
-    },
-    init(w) {
-      const s = w.s;
-      const C = w.cols;
-      const R = w.rows;
-      s.koi = Array.from({ length: Math.round(clamp((C * R) / 700, 2, 9)) }, () => ({
-        x: rnd(4, Math.max(5, C - 14)),
-        y: rnd(2, Math.max(3, R - 6)),
-        a: rnd(0, 6.28),
-        v: rnd(1.3, 2.4),
-        turn: 0,
-        pal: pick(KOI_PALS),
-        ph: rnd(0, 6),
-      }));
-      s.pads = Array.from({ length: Math.round(clamp((C * R) / 500, 3, 12)) }, () => ({
-        x: Math.round(rnd(0, C)),
-        y: Math.round(rnd(0, R)),
-        r: rint(2, C > 60 ? 4 : 3),
-        n: rnd(0, 6.28),
-        lotus: Math.random() < 0.3,
-      }));
-      s.ripples = [];
-      s.next = 0.5;
-      s.specks = Array.from({ length: Math.round(clamp((C * R) / 120, 10, 60)) }, () => ({ x: rnd(0, C), y: rnd(0, R), ph: rnd(0, 6) }));
-    },
-    over(w) {
-      for (const p of w.s.pads) {
-        for (let pass = 0; pass < 2; pass++) {
-          for (let dy = -p.r; dy <= p.r; dy++) {
-            for (let dx = -p.r; dx <= p.r; dx++) {
-              const d = Math.hypot(dx, dy);
-              if (d > p.r + 0.35) continue;
-              if (d > 0.8 && Math.abs(angDiff(Math.atan2(dy, dx), p.n)) < 0.45) continue;
-              if (pass === 0) {
-                w.tile(p.x + dx + 1, p.y + dy + 1, '#04262a', null, '', 0.35);
-              } else {
-                const edge = d > p.r - 0.65;
-                w.tile(p.x + dx, p.y + dy, edge ? '#57ba68' : '#3f9c51', edge ? '#3f9c51' : '#2d7a3d', w.ch(dx, dy, 13));
-              }
-            }
-          }
-        }
-        if (p.lotus) {
-          for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) w.tile(p.x + dx, p.y + dy, '#ff9fcb', '#e0679d', w.ch(dx, dy, 4));
-          w.tile(p.x, p.y, '#ffe27a', '#e0b93f', '*');
-        }
-      }
-    },
-    frame(w, dt) {
-      const s = w.s;
-      for (const p of s.specks) w.dot(p.x, p.y, '#a6efe0', 0.15 + 0.2 * Math.sin(w.t * 1.3 + p.ph), 0.25);
-
-      s.next -= dt;
-      if (s.next <= 0) {
-        s.ripples.push({ x: rnd(0, w.cols), y: rnd(0, w.rows), r: 0, m: rnd(3, 6) });
-        s.next = rnd(0.8, 2.2);
-      }
-      s.ripples = s.ripples.filter((r) => (r.r += 2.2 * dt) < r.m);
-      for (const r of s.ripples) {
-        const n = Math.max(6, Math.round(r.r * 6.3));
-        for (let k = 0; k < n; k++) {
-          const a = (k / n) * Math.PI * 2;
-          w.dot(r.x + Math.cos(a) * r.r, r.y + Math.sin(a) * r.r, '#c8f7ee', 0.55 * (1 - r.r / r.m), 0.35);
-        }
-      }
-
-      for (const k of s.koi) {
-        k.turn = clamp(k.turn + rnd(-1, 1) * dt * 1.2, -0.7, 0.7);
-        k.a += k.turn * dt;
-        if (k.x < 3 || k.x > w.cols - 14 || k.y < 1 || k.y > w.rows - 6) {
-          k.a += angDiff(Math.atan2(w.rows / 2 - k.y, w.cols / 2 - k.x), k.a) * Math.min(1, dt * 2);
-        }
-        k.x += Math.cos(k.a) * k.v * dt;
-        k.y += Math.sin(k.a) * k.v * dt * 0.7;
-        w.sprite(KOI[Math.floor(w.t * 3 + k.ph) % 2], k.x, k.y, { flip: Math.cos(k.a) < 0, pal: k.pal, seed: 5 });
-      }
-    },
-  });
-
-  function jelly(w, any) {
-    const col = pick(JELLY_COLS);
-    return { x: rnd(0, Math.max(1, w.cols - 9)), y: any ? rnd(0, w.rows) : w.rows + rnd(0, 6), v: rnd(0.6, 1.2), ph: rnd(0, 1), pal: jellyPal(col[0], col[1]), col: col[0] };
-  }
-
-  THEMES.push({
-    id: 'jelly',
-    name: 'Deep Glow',
-    dark: true,
-    alias: ['sua', 'jellyfish', 'deep', 'dai duong'],
-    glyphs: '~*.:o',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#0b3c6b', '#072a52', '#030f24']);
-      rglow(c, w * 0.5, -h * 0.15, h, '#5bb6ff', 0.2);
-    },
-    init(w) {
-      const s = w.s;
-      s.j = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 600, 2, 10)) }, () => jelly(w, true));
-      s.snow = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 90, 10, 80)) }, () => ({ x: rnd(0, w.cols), y: rnd(0, w.rows), v: rnd(0.2, 0.6), ph: rnd(0, 6) }));
-    },
-    frame(w, dt) {
-      const s = w.s;
-      for (const p of s.snow) {
-        p.y += p.v * dt;
-        if (p.y > w.rows + 1) {
-          p.y = -1;
-          p.x = rnd(0, w.cols);
-        }
-        w.dot(p.x + Math.sin(w.t * 0.5 + p.ph), p.y, '#bfe6ff', 0.35, 0.22);
-      }
-      for (let i = 0; i < s.j.length; i++) {
-        const j = s.j[i];
-        const push = (w.t * 0.7 * j.v + j.ph) % 1 < 0.3;
-        j.y -= (push ? 2.4 : 0.45) * j.v * dt;
-        j.x += Math.sin(w.t * 0.35 + j.ph * 6) * 0.3 * dt;
-        if (j.y < -10) s.j[i] = jelly(w, false);
-        w.glow(j.x + 4, j.y + 1.5, 5.5, j.col, 0.28);
-        w.sprite(JELLY[push ? 1 : 0], j.x, j.y, { pal: j.pal, seed: 3 });
-      }
-    },
-  });
-
-  function boat(w, any) {
-    return { x: any ? rnd(-9, w.cols) : -10, base: rint(Math.round(w.rows * 0.25), Math.max(Math.round(w.rows * 0.25), w.rows - 8)), v: rnd(0.5, 1.1), ph: rnd(0, 6), pal: pick(BOAT_PALS) };
-  }
-
-  THEMES.push({
-    id: 'boats',
-    name: 'Paper Fleet',
-    dark: false,
-    alias: ['thuyen', 'thuyen giay', 'boat'],
-    glyphs: '~-.',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#d4f4ee', '#9fdfd8', '#63c2c4']);
-      rglow(c, w * 0.8, h * 0.05, h * 0.6, '#ffffff', 0.35);
-    },
-    init(w) {
-      const s = w.s;
-      const top = Math.round(w.rows * 0.22);
-      s.bands = [];
-      for (let y = top; y < w.rows; y += rint(3, 5)) s.bands.push({ y, k: s.bands.length, v: rnd(0.4, 1.2) * (s.bands.length % 2 ? -1 : 1), off: rnd(0, 100) });
-      s.boats = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 900, 2, 8)) }, () => boat(w, true)).sort((a, b) => a.base - b.base);
-      s.glints = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 200, 6, 40)) }, () => ({ x: rint(0, w.cols), y: rint(top, w.rows), ph: rnd(0, 6) }));
-    },
-    frame(w, dt) {
-      const s = w.s;
-      for (const b of s.bands) {
-        b.off += b.v * dt;
-        for (let x = 0; x < w.cols; x++) {
-          const u = Math.floor(x + b.off);
-          if (hash(u, b.k, 9) > 0.3) continue;
-          w.tile(x, b.y + Math.round(Math.sin(u * 0.4 + w.t * 0.8) * 0.5), 'rgba(255,255,255,0.32)', '#ffffff', '~', 0.9);
-        }
-      }
-      for (const g of s.glints) w.glyph(g.x, g.y, '+', '#ffffff', Math.max(0, Math.sin(w.t * 2 + g.ph)) * 0.8);
-      for (const b of s.boats) {
-        b.x += b.v * dt;
-        if (b.x > w.cols + 1) b.x = -10;
-        const y = b.base + Math.sin(w.t * 1.3 + b.ph) * 0.6;
-        for (let i = 1; i < 8; i++) w.tile(b.x + i, y + 7, '#145a64', null, '', 0.18);
-        w.sprite(BOAT, b.x, y, { pal: b.pal, seed: 4 });
-      }
-    },
-  });
-
-  THEMES.push({
-    id: 'fireflies',
-    name: 'Night Forest',
-    dark: true,
-    alias: ['dom dom', 'domdom', 'firefly', 'rung', 'forest'],
-    glyphs: '|/\\^.',
-    bg(c, w, h) {
-      vgrad(c, w, h, ['#061210', '#0a1c16', '#0f2a1e']);
-      rglow(c, w * 0.15, h * 0.1, h * 0.5, '#9bd88a', 0.07);
-    },
-    init(w) {
-      const s = w.s;
-      s.seed = rint(1, 1e5);
-      s.f = Array.from({ length: Math.round(clamp((w.cols * w.rows) / 140, 8, 60)) }, () => ({
-        x: rnd(0, w.cols),
-        y: rnd(0, w.rows * 0.9),
-        vx: rnd(-0.5, 0.5),
-        vy: rnd(-0.3, 0.3),
-        ph: rnd(0, 6),
-        f: rnd(0.8, 2),
-      }));
-    },
-    under(w) {
-      const C = w.cols;
-      const R = w.rows;
-      const seed = w.s.seed;
-      for (let x = 0; x < C; x++) {
-        const hf = Math.round(R * 0.26 + Math.sin(x * 0.08 + seed) * 2.2 + Math.sin(x * 0.21) * 1.2 + hash(x, 1, seed) * 1.4);
-        for (let y = R - hf; y < R; y++) w.tile(x, y, '#0e261a', '#133222', w.ch(x, y, 3));
-      }
-      for (let k = Math.round(clamp(C / 10, 3, 14)); k > 0; k--) {
-        const px = Math.round(hash(k, 2, seed) * C);
-        const ph = Math.round(R * (0.3 + hash(k, 3, seed) * 0.18));
-        for (let j = 0; j < ph; j++) {
-          const half = Math.floor(j * 0.32);
-          for (let dx = -half; dx <= half; dx++) w.tile(px + dx, R - ph + j, '#0b2016', '#10291b', w.ch(dx, j, 7));
-        }
-      }
-      for (let x = 0; x < C; x++) {
-        const hn = Math.round(R * 0.1 + Math.sin(x * 0.3 + seed) + hash(x, 4, seed) * 1.5);
-        for (let y = R - hn; y < R; y++) w.tile(x, y, '#08150e', '#0c1f14', w.ch(x, y, 9));
-      }
-    },
-    frame(w, dt) {
-      for (const f of w.s.f) {
-        f.vx = clamp(f.vx + rnd(-1, 1) * dt, -0.7, 0.7);
-        f.vy = clamp(f.vy + rnd(-1, 1) * dt, -0.5, 0.5);
-        f.x += f.vx * dt;
-        f.y += f.vy * dt;
-        if (f.x < 0 || f.x > w.cols) {
-          f.vx = -f.vx;
-          f.x = clamp(f.x, 0, w.cols);
-        }
-        if (f.y < 1 || f.y > w.rows - 2) {
-          f.vy = -f.vy;
-          f.y = clamp(f.y, 1, w.rows - 2);
-        }
-        let b = Math.sin(w.t * f.f + f.ph);
-        b = b > 0 ? b * b : 0;
-        w.glow(f.x, f.y, 2.8, '#d9ff6e', b * 0.5);
-        w.tile(f.x, f.y, '#f1ffa6', '#a9cf3a', '·', 0.2 + 0.8 * b);
-      }
-    },
-  });
-
-  function moonGeo(w) {
-    return {
-      sea: Math.round(w.rows * 0.8),
-      mx: Math.round(w.cols * 0.78),
-      my: Math.max(3, Math.round(w.rows * 0.2)),
-      mr: clamp(Math.round(Math.min(w.cols, w.rows) * 0.08), 2, 7),
-    };
-  }
-
-  THEMES.push({
-    id: 'moon',
-    name: 'Starry Night',
-    dark: true,
-    alias: ['trang', 'dem', 'night', 'moonlit'],
-    glyphs: '+*.:',
+    alias: ['hai ly', 'hai ly hong', 'beaver', 'pink', 'hong'],
+    glyphs: ".:'",
     bg(c, w, h, W) {
-      const g = moonGeo(W);
-      vgrad(c, w, h, ['#0a1036', '#141c50', '#26306e']);
-      const sy = g.sea * W.cell;
-      const sea = c.createLinearGradient(0, sy, 0, h);
-      sea.addColorStop(0, '#111a4c');
-      sea.addColorStop(1, '#070b28');
-      c.fillStyle = sea;
-      c.fillRect(0, sy, w, h - sy);
-      rglow(c, (g.mx + 0.5) * W.cell, (g.my + 0.5) * W.cell, g.mr * W.cell * 5, '#fff2c4', 0.22);
+      skyAndWater(c, w, h, beaverGeo(W).horizon * W.cell, ['#ffd3e6', '#ffe6ef', '#fff4e8'], ['#ade3ef', '#6cc3dc']);
+      rglow(c, w * 0.22, h * 0.18, Math.max(w, h) * 0.4, '#ffffff', 0.55);
     },
     init(w) {
       const s = w.s;
-      const g = moonGeo(w);
-      s.stars = [];
-      for (let i = Math.round(clamp((w.cols * w.rows) / 70, 15, 160)); i > 0; i--) {
-        const x = rint(0, w.cols - 1);
-        const y = rint(0, Math.max(0, g.sea - 2));
-        if (Math.hypot(x - g.mx, y - g.my) < g.mr + 2) continue;
-        s.stars.push({ x, y, ch: pick(['.', '+', '*', ':']), ph: rnd(0, 6), f: rnd(0.6, 2) });
-      }
-      s.clouds = Array.from({ length: Math.round(clamp(w.cols / 25, 2, 5)) }, () => {
-        const c = cloud(w, true, CLOUD_NIGHT);
-        c.y = rnd(0, g.sea * 0.6);
+      const g = beaverGeo(w);
+      s.clouds = many(w, 900, 2, 6, () => {
+        const c = cloud(w, true, CLOUD_PINK);
+        c.y = rnd(-1, g.horizon * 0.5);
         c.v *= 0.4;
-        c.a *= 0.75;
         return c;
       });
-      s.shoot = null;
-      s.next = rnd(2, 6);
-    },
-    under(w) {
-      const g = moonGeo(w);
-      for (let dy = -g.mr; dy <= g.mr; dy++) {
-        for (let dx = -g.mr; dx <= g.mr; dx++) {
-          const d = Math.hypot(dx, dy);
-          if (d > g.mr + 0.3) continue;
-          const crater = hash(dx, dy, 11) < 0.16 && d < g.mr - 0.8;
-          w.tile(g.mx + dx, g.my + dy, crater ? '#eadb9f' : d > g.mr - 0.7 ? '#fff9e3' : '#fff2c7', '#e0cf8e', crater ? 'o' : w.ch(dx, dy, 2));
-        }
-      }
+      s.hearts = many(w, 500, 3, 14, () => heart(w, true, g));
+      s.bubbles = many(w, 300, 4, 24, () => ({ x: rnd(0, w.cols), y: rnd(g.horizon, w.rows), v: rnd(0.4, 1), ph: rnd(0, 6) }));
+      s.sparks = many(w, 260, 4, 30, () => ({ x: rnd(0, w.cols), y: rnd(0, g.horizon), ph: rnd(0, 6) }));
     },
     frame(w, dt) {
       const s = w.s;
-      const g = moonGeo(w);
-      for (const st of s.stars) w.glyph(st.x, st.y, st.ch, '#e8ecff', 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(w.t * st.f + st.ph)));
-      for (const c of s.clouds) {
-        c.x += c.v * dt;
-        if (c.x > w.cols + 1) c.x = -c.sp.w - rnd(0, 10);
-        w.sprite(c.sp, c.x, c.y, { a: c.a, seed: c.seed });
+      const g = beaverGeo(w);
+      const t = w.t;
+      driftClouds(w, s.clouds, dt);
+      for (const p of s.sparks) w.glyph(p.x, p.y, '+', '#ffffff', 0.2 + 0.6 * Math.max(0, Math.sin(t * 1.5 + p.ph)));
+      for (let i = 0; i < s.hearts.length; i++) {
+        const hh = s.hearts[i];
+        hh.y -= hh.v * dt;
+        if (hh.y < -5) s.hearts[i] = heart(w, false, g);
+        w.sprite(HEART, hh.x + Math.sin(t * 0.8 + hh.ph) * 1.2, hh.y, { pal: hh.pal, a: hh.a * clamp((hh.y + 4) / 6, 0, 1) });
       }
-
-      s.next -= dt;
-      if (!s.shoot && s.next <= 0) s.shoot = { x: rnd(w.cols * 0.3, w.cols), y: rnd(0, g.sea * 0.4), vx: -rnd(16, 24), vy: rnd(6, 10), life: 0 };
-      if (s.shoot) {
-        const sh = s.shoot;
-        sh.life += dt;
-        sh.x += sh.vx * dt;
-        sh.y += sh.vy * dt;
-        const len = Math.hypot(sh.vx, sh.vy);
-        for (let i = 0; i < 9; i++) w.tile(sh.x - (sh.vx / len) * i, sh.y - (sh.vy / len) * i, i ? '#cfd8ff' : '#ffffff', '#9fb0ff', '', (1 - i / 9) * (1 - sh.life / 1.4));
-        if (sh.life > 1.4 || sh.y > g.sea) {
-          s.shoot = null;
-          s.next = rnd(4, 10);
+      ripples(w, g.horizon + 1, '#ffffff', 51);
+      for (const b of s.bubbles) {
+        b.y -= b.v * dt;
+        if (b.y < g.horizon + 1) {
+          b.y = w.rows + 1;
+          b.x = rnd(0, w.cols);
         }
+        w.glyph(b.x + Math.sin(t + b.ph) * 0.6, b.y, 'o', '#effcff', 0.65);
       }
-
-      const tick = Math.floor(w.t * 4);
-      for (let y = g.sea + 1; y < w.rows; y++) {
-        const d = y - g.sea;
-        const dir = y % 2 ? 1 : -1;
-        for (let x = 0; x < w.cols; x++) {
-          if (hash(Math.floor(x + w.t * 0.7 * dir), y, 21) < 0.07) w.glyph(x, y, '~', '#4a57a8', 0.7);
-        }
-        const spread = 1 + d * 0.7;
-        for (let x = Math.floor(g.mx - spread); x <= g.mx + spread; x++) {
-          if (hash(x, y, tick) < 0.32) w.tile(x, y, '#fff0b8', '#e2cf86', '~', 0.6 - d * 0.03);
-        }
+      // Pink reflection on the water.
+      for (let x = g.bx + 1; x < g.bx + BEAVER.w - 1; x++) for (let k = 1; k < 4; k++) w.tile(x, g.horizon + k, '#ff9ec4', null, '', 0.28 - k * 0.07);
+      // The log it sits on: tail behind, then the log, then the beaver.
+      const hop = Math.sin(t * 1.6) > 0.55 ? -1 : 0;
+      w.sprite(BEAVER_TAIL, g.bx - 3, g.by + 8 + (Math.floor(t * 3) % 2) + hop);
+      const lx = g.bx - 4;
+      const lw = BEAVER.w + 8;
+      for (let i = 0; i < lw; i++) {
+        const end = i === 0 || i === lw - 1;
+        w.tile(lx + i, g.horizon - 1, end ? '#e7c08f' : '#b47a4c', end ? '#a97948' : '#8a5a35', end ? 'o' : '=');
+        w.tile(lx + i, g.horizon, end ? '#d9ad7a' : '#8f6040', end ? '#a07040' : '#6e4529', end ? 'o' : '=', 0.9);
       }
+      w.sprite(t % 4 < 0.18 ? BEAVER_BLINK : BEAVER, g.bx, g.by + hop);
     },
   });
 
-  // Vietnam's flag: 2:3, red field, a yellow five-pointed star in the middle
-  // whose centre-to-tip radius is 1/5 of the flag's length, one point up.
-  const FLAG_RED = [
-    ['#9e1712', '#7f120e'],
-    ['#b31b15', '#921611'],
-    ['#c72019', '#a51a14'],
-    ['#da251d', '#b51f18'],
-    ['#e8382c', '#c52c22'],
-    ['#f2503f', '#d23e31'],
-    ['#fa6a55', '#dc5545'],
+  /* ------------------------------------------------------ Rainbow Bunny */
+
+  const RAINBOW = ['#ff5a5a', '#ff9d3c', '#ffd93d', '#62cf5c', '#4aa8ff', '#5d63ef', '#a55cf0'];
+  const BUNNY_PAL = {
+    w: ['#ffffff', '#c9d1db'],
+    i: ['#ffc2d4', '#f3a0b8', ''],
+    K: ['#2d2a32', null, ''],
+    n: ['#ff8fb1', null, ''],
+    b: ['#ffd1dc', '#f7b5c6', ''],
+    t: ['#fff7e8', '#e8dcc4', 'o'],
+    f: ['#f1f3f6', '#cfd5dc', ''],
+  };
+  const BUNNY_ROWS = [
+    '  ww  ww   ',
+    '  wi  wi   ',
+    '  wi  wi   ',
+    '  ww  ww   ',
+    ' wwwwwwww  ',
+    'wwwwwwKwww ',
+    'wwwwwwwwwnw',
+    'wwwwwwwbww ',
+    ' wwwwwwwww ',
+    'twwwwwwwww ',
+    ' ff    ff  ',
   ];
-  const FLAG_YELLOW = [
-    ['#c7b000', '#9c8900'],
-    ['#dac400', '#ac9800'],
-    ['#ecd800', '#bda800'],
-    ['#ffea00', '#cfb800'],
-    ['#fff23d', '#dcc81a'],
-    ['#fff76b', '#e4d244'],
-    ['#fffa99', '#ebdc6e'],
-  ];
+  const BUNNY_SIT = sprite(BUNNY_ROWS, BUNNY_PAL);
+  const BUNNY_HOP = sprite(BUNNY_ROWS.map((r, j) => (j < 4 ? ' ' + r.slice(0, -1) : j === 10 ? 'ff       ff' : r)), BUNNY_PAL);
 
-  function inStar(x, y, cx, cy, R) {
-    const r = R * 0.381966;
-    let inside = false;
-    for (let k = 0, j = 9; k < 10; j = k++) {
-      const ak = -Math.PI / 2 + (k * Math.PI) / 5;
-      const aj = -Math.PI / 2 + (j * Math.PI) / 5;
-      const rk = k % 2 ? r : R;
-      const rj = j % 2 ? r : R;
-      const xk = cx + Math.cos(ak) * rk;
-      const yk = cy + Math.sin(ak) * rk;
-      const xj = cx + Math.cos(aj) * rj;
-      const yj = cy + Math.sin(aj) * rj;
-      if (yk > y !== yj > y && x < ((xj - xk) * (y - yk)) / (yj - yk) + xk) inside = !inside;
-    }
-    return inside;
-  }
-
-  function flagGeo(w) {
-    const horizon = Math.round(w.rows * 0.8);
-    const top = Math.max(2, Math.round(w.rows * 0.12));
-    // Phones get a bigger share of the width so the star stays readable.
-    const narrow = w.cols < 60;
-    const L = Math.round(clamp(Math.min(w.cols * (narrow ? 0.55 : 0.34), ((horizon - top - 3) * 3) / 2), 9, 48));
-    const H = Math.round((L * 2) / 3);
-    const px = Math.round(clamp(narrow ? w.cols - L - 3 : w.cols * 0.62, 2, w.cols - L - 2));
-    return { horizon, top, L, H, px };
-  }
-
-  // Limestone karst towers (Ha Long style): steep sides, rounded tops.
-  function karstHeights(cols, peaks) {
-    const hs = new Array(cols).fill(0);
-    for (const p of peaks) {
-      for (let x = Math.floor(p.x - p.w * 1.3); x <= Math.ceil(p.x + p.w * 1.3); x++) {
-        if (x < 0 || x >= cols) continue;
-        // Lean: the left and right flanks fall at different rates.
-        const dx = x + 0.5 - p.x;
-        const d = Math.abs(dx) / (p.w * (dx < 0 ? 1 + p.lean : 1 - p.lean));
-        if (d >= 1) continue;
-        // Steep flanks, a broad rounded crown.
-        hs[x] = Math.max(hs[x], Math.round(p.h * Math.pow(1 - Math.pow(d, 2.6), 0.55)));
-      }
-    }
-    return hs;
+  function bunnyGeo(w) {
+    const horizon = Math.round(w.rows * 0.76);
+    const R = Math.round(clamp(Math.min(w.cols * 0.32, w.rows * 0.55), 6, 44));
+    const band = R > 30 ? 2 : 1;
+    return { horizon, R, band, cx: Math.round(w.cols * (w.cols < 60 ? 0.5 : 0.42)) };
   }
 
   THEMES.push({
-    id: 'vn',
-    name: 'Việt Nam',
+    id: 'bunny',
+    name: 'Thỏ Bảy Màu',
     dark: false,
-    veilScale: 0.5,
-    alias: ['co', 'co do', 'co viet nam', 'co do sao vang', 'viet nam', 'vietnam', 'quoc ky', 'to quoc', 'flag'],
-    glyphs: ':.;',
+    alias: ['tho', 'tho bay mau', 'bay mau', 'tho trang', 'bunny', 'rabbit', 'rainbow', 'cau vong'],
+    glyphs: ",'.\"",
     bg(c, w, h, W) {
-      const g = flagGeo(W);
-      const hy = g.horizon * W.cell;
-      const sky = c.createLinearGradient(0, 0, 0, hy);
-      sky.addColorStop(0, '#4f9fe0');
-      sky.addColorStop(0.55, '#9fd2f2');
-      sky.addColorStop(1, '#ffe0b0');
-      c.fillStyle = sky;
-      c.fillRect(0, 0, w, hy);
-      const sea = c.createLinearGradient(0, hy, 0, h);
-      sea.addColorStop(0, '#6fb7cc');
-      sea.addColorStop(1, '#2c7896');
-      c.fillStyle = sea;
-      c.fillRect(0, hy, w, h - hy);
-      rglow(c, w * 0.82, hy, Math.max(w, h) * 0.45, '#ffd27a', 0.55);
+      skyAndWater(c, w, h, bunnyGeo(W).horizon * W.cell, ['#7cc4f5', '#b5defb', '#e9f6ff'], ['#9ee07a', '#5fb846']);
+      rglow(c, w * 0.85, h * 0.12, Math.max(w, h) * 0.3, '#fff6c8', 0.7);
     },
     init(w) {
       const s = w.s;
-      const g = flagGeo(w);
-      s.mask = [];
-      for (let j = 0; j < g.H; j++) {
-        const row = [];
-        for (let i = 0; i < g.L; i++) {
-          // Area coverage (6x6 samples per cell) keeps the thin star points from breaking up.
-          let n = 0;
-          for (let a = 0; a < 6; a++) for (let b = 0; b < 6; b++) if (inStar(i + (a + 0.5) / 6, j + (b + 0.5) / 6, g.L / 2, g.H / 2, g.L / 5)) n++;
-          row.push(n / 36 >= 0.22);
-        }
-        s.mask.push(row);
-      }
-      const cluster = (n, wMin, wMax, hMax) => {
-        const out = [];
-        for (let c = 0; c < n; c++) {
-          const x = rnd(0, w.cols);
-          const h = rnd(hMax * 0.55, hMax);
-          const wd = rnd(wMin, wMax);
-          out.push({ x, w: wd, h, lean: rnd(-0.25, 0.25) });
-          if (Math.random() < 0.7) out.push({ x: x + wd * rnd(0.8, 1.3) * (Math.random() < 0.5 ? -1 : 1), w: wd * 0.7, h: h * rnd(0.45, 0.7), lean: rnd(-0.25, 0.25) });
-        }
-        return out;
-      };
-      s.far = cluster(Math.round(clamp(w.cols / 14, 2, 8)), 3, 6, Math.max(4, w.rows * 0.16));
-      s.near = cluster(Math.round(clamp(w.cols / 22, 1, 5)), 3.5, 7, Math.max(5, w.rows * 0.24));
-      s.clouds = Array.from({ length: Math.round(clamp(w.cols / 30, 2, 5)) }, () => {
+      const g = bunnyGeo(w);
+      s.clouds = many(w, 800, 2, 7, () => {
         const c = cloud(w, true, CLOUD_DAY);
-        c.y = rnd(-1, g.horizon * 0.45);
+        c.y = rnd(-1, g.horizon * 0.55);
         c.v *= 0.5;
         return c;
       });
-      s.birds = Array.from({ length: Math.round(clamp(w.cols / 14, 3, 9)) }, () => ({ x: rnd(0, w.cols), y: rnd(2, g.horizon * 0.5), v: rnd(0.8, 1.8), ph: rnd(0, 6) }));
-      s.dust = Array.from({ length: Math.round(clamp(w.cols / 4, 6, 30)) }, () => ({ x: rnd(w.cols * 0.55, w.cols), y: rnd(0, g.horizon), ph: rnd(0, 6), v: rnd(0.1, 0.4) }));
+      s.sparks = many(w, 240, 5, 34, () => ({ x: rnd(0, w.cols), y: rnd(0, g.horizon), ph: rnd(0, 6), col: pick(RAINBOW) }));
+      s.bunny = { x: rnd(2, Math.max(3, w.cols - 14)), dir: 1, ph: 0, rest: 1 };
     },
     under(w) {
-      const s = w.s;
-      const g = flagGeo(w);
-      // Rising sun, half behind the mountains.
-      const sx = Math.round(w.cols * 0.82);
-      const sr = clamp(Math.round(w.rows * 0.07), 2, 5);
-      for (let dy = -sr; dy <= 0; dy++) {
-        for (let dx = -sr; dx <= sr; dx++) {
-          if (Math.hypot(dx, dy) <= sr + 0.3) w.tile(sx + dx, g.horizon - 1 + dy, '#fff0b8', '#f5d27a', w.ch(dx, dy, 31));
+      const g = bunnyGeo(w);
+      // The rainbow: seven bands of an arc standing on the horizon.
+      for (let y = g.horizon - g.R - 1; y < g.horizon; y++) {
+        for (let x = g.cx - g.R - 1; x <= g.cx + g.R + 1; x++) {
+          const d = Math.hypot(x + 0.5 - g.cx, y + 0.5 - g.horizon);
+          const k = Math.floor((g.R - d) / g.band);
+          if (k >= 0 && k < 7) w.tile(x, y, RAINBOW[k], null, '', 0.5);
         }
       }
-      const far = karstHeights(w.cols, s.far);
-      const near = karstHeights(w.cols, s.near);
-      // Far towers fade into the morning haze; near ones are darker with green crowns.
+      // A far hill, then the meadow with flowers.
       for (let x = 0; x < w.cols; x++) {
-        for (let k = 0; k < far[x]; k++) w.tile(x, g.horizon - 1 - k, '#a9c4cf', '#97b5c2', w.ch(x, k, 32), 0.8);
+        const hh = Math.round(2 + Math.sin(x * 0.09 + 1) * 1.6 + Math.sin(x * 0.23) * 0.8);
+        for (let k = 0; k < hh; k++) w.tile(x, g.horizon - 1 - k, '#b4e59a', '#94cf78', w.ch(x, k, 61), 0.95);
       }
-      for (let x = 0; x < w.cols; x++) {
-        const hgt = near[x];
-        for (let k = 0; k < hgt; k++) {
-          const crown = k >= hgt - 2 && hgt > 2;
-          w.tile(x, g.horizon - 1 - k, crown ? '#6f9e7c' : '#5b8b92', crown ? '#557f62' : '#46737a', w.ch(x, k, 33));
+      const FLOWERS = ['#ffffff', '#ffd93d', '#ff8fb1', '#a55cf0'];
+      for (let y = g.horizon; y < w.rows; y++) {
+        for (let x = 0; x < w.cols; x++) {
+          const r = hash(x, y, 62);
+          if (r < 0.06) w.tile(x, y, FLOWERS[(r * 1000) % 4 | 0], '#5a8f3a', '*');
+          else if (r < 0.4) w.glyph(x, y, w.ch(x, y, 63), '#3f8f2c', 0.7);
         }
-      }
-      // Reflections of the near towers on the water.
-      for (let x = 0; x < w.cols; x++) {
-        for (let k = 0; k < Math.min(near[x], w.rows - g.horizon) * 0.5; k++) w.tile(x, g.horizon + k, '#3f7f8f', null, '', 0.35 - k * 0.06);
       }
     },
     frame(w, dt) {
       const s = w.s;
-      const g = flagGeo(w);
+      const g = bunnyGeo(w);
       const t = w.t;
-
-      for (const c of s.clouds) {
-        c.x += c.v * dt;
-        if (c.x > w.cols + 1) c.x = -c.sp.w - rnd(0, 10);
-        w.sprite(c.sp, c.x, c.y, { a: c.a * 0.9, seed: c.seed });
+      driftClouds(w, s.clouds, dt);
+      for (const p of s.sparks) w.dot(p.x, p.y, p.col, 0.2 + 0.7 * Math.max(0, Math.sin(t * 1.8 + p.ph)), 0.3);
+      // The bunny hops a few times, rests, turns at the edges.
+      const b = s.bunny;
+      let lift = 0;
+      if (b.rest > 0) b.rest -= dt;
+      else {
+        b.ph += dt / 0.6;
+        b.x += b.dir * 5 * dt;
+        lift = Math.round(Math.sin(Math.min(1, b.ph % 1) * Math.PI) * 3);
+        if (b.ph >= 3) {
+          b.ph = 0;
+          b.rest = rnd(0.8, 2.5);
+        }
+        if (b.x > w.cols - BUNNY_SIT.w - 1) b.dir = -1;
+        if (b.x < 1) b.dir = 1;
       }
-      for (const d of s.dust) w.dot(d.x + Math.sin(t * 0.6 + d.ph), d.y - ((t * d.v) % g.horizon), '#fff4c8', 0.25 + 0.25 * Math.sin(t * 2 + d.ph), 0.22);
+      const y = g.horizon - BUNNY_SIT.h + 2;
+      // Shadow stays on the ground.
+      for (let i = 2; i < BUNNY_SIT.w - 1; i++) w.tile(b.x + i, y + BUNNY_SIT.h, '#4f9a37', null, '', 0.35 - lift * 0.07);
+      w.sprite(lift ? BUNNY_HOP : BUNNY_SIT, b.x, y - lift, { flip: b.dir < 0 });
+    },
+  });
+
+  /* ----------------------------------------------------- N Seoul Tower */
+
+  const TOWER_LIGHTS = ['#ff5fa2', '#6aa8ff', '#7cf0c8', '#ffd36a', '#b58cff'];
+
+  function namsanGeo(w) {
+    const hx = Math.round(w.cols * (w.cols < 60 ? 0.5 : 0.62));
+    const hh = Math.round(clamp(w.rows * 0.24, 4, 30));
+    const hw = Math.max(12, w.cols * 0.26);
+    const S = Math.round(clamp(w.rows * 0.15, 3, 18));
+    const A = Math.round(clamp(S * 0.6, 2, 11));
+    return { hx, hh, hw, S, A };
+  }
+  const hillH = (g, x) => {
+    const d = Math.abs(x + 0.5 - g.hx) / g.hw;
+    return d >= 1 ? 0 : Math.round(g.hh * Math.pow(1 - d * d, 0.7));
+  };
+
+  THEMES.push({
+    id: 'namsan',
+    name: 'Tháp Namsan',
+    dark: true,
+    alias: ['namsan', 'thap namsan', 'seoul', 'han quoc', 'korea', 'n tower'],
+    glyphs: '.:+',
+    bg(c, w, h) {
+      vgrad(c, w, h, ['#070b26', '#141a47', '#2c2160', '#5a2f6b']);
+      rglow(c, w * 0.5, h * 1.05, Math.max(w, h) * 0.6, '#ff9a6a', 0.22);
+    },
+    init(w) {
+      const s = w.s;
+      const g = namsanGeo(w);
+      s.stars = many(w, 70, 12, 160, () => ({ x: rint(0, w.cols), y: rint(0, Math.round(w.rows * 0.6)), ph: rnd(0, 6), sp: rnd(0.8, 2.4) }));
+      // Skyline along the bottom; windows are kept so they can flicker.
+      s.city = [];
+      s.windows = [];
+      for (let x = 0; x < w.cols; ) {
+        const bw = rint(2, 6);
+        const bh = Math.round(rnd(w.rows * 0.05, w.rows * (Math.abs(x - g.hx) < g.hw * 0.4 ? 0.1 : 0.2)));
+        s.city.push({ x, bw, bh, col: pick(['#151a3a', '#1b2047', '#111531']) });
+        for (let i = 0; i < bw; i++) for (let k = 0; k < bh; k++) if (hash(x + i, k, 71) < 0.3) s.windows.push({ x: x + i, y: w.rows - 1 - k, col: pick(['#ffd98a', '#ffeab8', '#9fd2ff']), ph: rnd(0, 6), sp: rnd(0.1, 0.5) });
+        x += bw + (Math.random() < 0.3 ? 1 : 0);
+      }
+      s.plane = { x: -2, y: rnd(2, w.rows * 0.25) };
+    },
+    under(w) {
+      const s = w.s;
+      const g = namsanGeo(w);
+      // Moon.
+      const mx = Math.round(w.cols * (w.cols < 60 ? 0.2 : 0.16));
+      const my = Math.max(2, Math.round(w.rows * 0.14));
+      const mr = clamp(Math.round(w.rows * 0.05), 1, 4);
+      w.glow(mx, my, mr * 5, '#fff2cc', 0.35);
+      for (let dy = -mr; dy <= mr; dy++) for (let dx = -mr; dx <= mr; dx++) if (Math.hypot(dx, dy) <= mr + 0.3) w.tile(mx + dx, my + dy, '#fff4d6', '#e8d9a8', w.ch(dx, dy, 72));
+      // The hill with trees.
+      const base = w.rows;
+      for (let x = 0; x < w.cols; x++) {
+        const hh = hillH(g, x);
+        for (let k = 0; k < hh; k++) w.tile(x, base - 1 - k, k >= hh - 1 ? '#1d4a3c' : '#163a30', '#0f2a22', k >= hh - 1 ? '^' : w.ch(x, k, 73));
+      }
+      // The tower on the hilltop.
+      const top = base - hillH(g, g.hx);
+      for (let dx = -1; dx <= 1; dx++) for (let k = 1; k <= 2; k++) w.tile(g.hx + dx, top - k, '#c9d1e3', '#9aa5bd', '#');
+      for (let k = 3; k < 3 + g.S; k++) w.tile(g.hx, top - k, '#e8edf7', '#aab4c8', '|');
+      const py = top - 3 - g.S;
+      s.pod = py;
+      for (let k = 0; k < g.A; k++) w.tile(g.hx, py - 4 - k, '#d5dceb', '#a2adc2', '|');
+      // Buildings in front of the hill.
+      for (const b of s.city) for (let i = 0; i < b.bw; i++) for (let k = 0; k < b.bh; k++) w.tile(b.x + i, base - 1 - k, b.col, '#232a58', w.ch(b.x + i, k, 74));
+    },
+    frame(w, dt) {
+      const s = w.s;
+      const g = namsanGeo(w);
+      const t = w.t;
+      for (const st of s.stars) w.dot(st.x, st.y, '#ffffff', 0.15 + 0.75 * Math.max(0, Math.sin(t * st.sp + st.ph)), 0.22);
+      // A plane blinking across the sky.
+      const p = s.plane;
+      p.x += 2.2 * dt;
+      if (p.x > w.cols + 2) {
+        p.x = -2;
+        p.y = rnd(2, w.rows * 0.25);
+      }
+      w.dot(p.x, p.y, Math.floor(t * 2) % 2 ? '#ff5050' : '#ffffff', 0.9, 0.3);
+      // The tower's observation deck changes colour every few seconds.
+      const col = TOWER_LIGHTS[Math.floor(t / 4) % TOWER_LIGHTS.length];
+      const py = s.pod;
+      w.glow(g.hx, py - 1.5, 7, col, 0.45 + 0.1 * Math.sin(t * 2));
+      const pod = [[2, py], [3, py - 1], [3, py - 2], [2, py - 3]];
+      for (const [half, y] of pod) {
+        for (let dx = -half; dx <= half; dx++) {
+          const lit = y === py - 1 || y === py - 2;
+          w.tile(g.hx + dx, y, lit ? col : '#e8edf7', lit ? '#ffffff' : '#aab4c8', lit ? '#' : '=');
+        }
+      }
+      w.tile(g.hx, py - 4 - g.A, '#ff4040', '#ffffff', '*', 0.4 + 0.6 * (Math.floor(t * 1.5) % 2));
+      for (const win of s.windows) w.tile(win.x, win.y, win.col, null, '', 0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t * win.sp + win.ph)));
+    },
+  });
+
+  /* ------------------------------------------------------- Mount Fuji */
+
+  const TORII = sprite(
+    ['RRRRRRRRRRR', ' rrrrrrrrr ', '  R  R  R  ', ' RRRRRRRRR ', '  R     R  ', '  R     R  ', '  R     R  '],
+    { R: ['#e0402f', '#b22e21'], r: ['#2f2a2a', '#1a1616', ''] },
+  );
+  const SAKURA = ['#ffc4d8', '#ffadc9', '#ff97bb', '#ffe0ea'];
+
+  function fujiGeo(w) {
+    const horizon = Math.round(w.rows * 0.7);
+    const mx = Math.round(w.cols * (w.cols < 60 ? 0.5 : 0.56));
+    const peakH = Math.round(clamp(Math.min(w.rows * 0.42, w.cols * 0.32), 4, 40));
+    return { horizon, mx, peakH, top: Math.max(1, Math.round(peakH * 0.14)), base: peakH * 2.6 };
+  }
+  function fujiH(g, x) {
+    const d = Math.abs(x + 0.5 - g.mx);
+    if (d <= g.top) return g.peakH;
+    const u = (d - g.top) / g.base;
+    return u >= 1 ? 0 : Math.round(g.peakH * Math.pow(1 - u, 1.7));
+  }
+
+  function petal(w, any) {
+    return { x: rnd(-5, w.cols), y: any ? rnd(0, w.rows) : rnd(-4, -1), vx: rnd(0.6, 1.6), vy: rnd(0.8, 1.8), ph: rnd(0, 6), col: pick(SAKURA), big: Math.random() < 0.4 };
+  }
+
+  THEMES.push({
+    id: 'fuji',
+    name: 'Núi Phú Sĩ',
+    dark: false,
+    alias: ['fuji', 'phu si', 'phu sy', 'nui phu si', 'nui phu sy', 'nhat ban', 'japan', 'sakura', 'hoa anh dao'],
+    glyphs: "^.:'",
+    bg(c, w, h, W) {
+      const g = fujiGeo(W);
+      skyAndWater(c, w, h, g.horizon * W.cell, ['#8fc3ec', '#cfe2f2', '#f9d6c8', '#ffc4b4'], ['#a9c6e0', '#6f97c2']);
+      rglow(c, w * 0.2, g.horizon * W.cell * 0.78, Math.max(w, h) * 0.35, '#ffe2c4', 0.6);
+    },
+    init(w) {
+      const s = w.s;
+      const g = fujiGeo(w);
+      s.clouds = many(w, 1000, 2, 5, () => {
+        const c = cloud(w, true, CLOUD_DAWN);
+        c.y = rnd(g.horizon - g.peakH * 0.6, g.horizon - 3);
+        c.v *= 0.35;
+        return c;
+      });
+      s.petals = many(w, 150, 6, 60, () => petal(w, true));
+      s.birds = many(w, 1200, 2, 6, () => ({ x: rnd(0, w.cols), y: rnd(2, g.horizon * 0.4), v: rnd(0.8, 1.6), ph: rnd(0, 6) }));
+    },
+    under(w) {
+      const g = fujiGeo(w);
+      // Rising sun behind the left shoulder.
+      const sx = Math.round(w.cols * 0.2);
+      const sy = Math.round(g.horizon * 0.78);
+      const sr = clamp(Math.round(w.rows * 0.05), 1, 4);
+      for (let dy = -sr; dy <= sr; dy++) for (let dx = -sr; dx <= sr; dx++) if (Math.hypot(dx, dy) <= sr + 0.3) w.tile(sx + dx, sy + dy, '#ffe7cf', '#f6c9a0', w.ch(dx, dy, 81), 0.9);
+      // The mountain: snow cap with ragged streaks, shaded left flank.
+      for (let x = 0; x < w.cols; x++) {
+        const hh = fujiH(g, x);
+        const snow = g.peakH * 0.6 + (hash(x, 0, 82) - 0.5) * g.peakH * 0.14 - (x % 3 === 0 ? g.peakH * 0.08 : 0);
+        const lit = x + 0.5 >= g.mx;
+        for (let k = 0; k < hh; k++) {
+          const y = g.horizon - 1 - k;
+          if (k >= snow) w.tile(x, y, lit ? '#ffffff' : '#e6ecf6', lit ? '#dbe3f0' : '#c6d0e2', w.ch(x, k, 83));
+          else {
+            const f = k / g.peakH;
+            w.tile(x, y, lit ? (f > 0.35 ? '#7f92c9' : '#6c81bb') : f > 0.35 ? '#6577b0' : '#566aa3', lit ? '#6476ad' : '#4b5c90', w.ch(x, k, 84));
+          }
+        }
+        // Mirror on the lake.
+        for (let k = 0; k < Math.min(hh, w.rows - g.horizon); k++) w.tile(x, g.horizon + k, k >= snow ? '#ffffff' : '#6c81bb', null, '', 0.3 - (k / hh) * 0.2);
+      }
+      // A shoreline of dark trees.
+      for (let x = 0; x < w.cols; x++) {
+        const th = Math.round(1 + hash(x, 1, 85) * 1.6);
+        for (let k = 0; k < th; k++) w.tile(x, g.horizon - 1 - k, '#3e5a4c', '#2e463a', '^', 0.95);
+      }
+    },
+    over(w) {
+      const g = fujiGeo(w);
+      // A torii standing in the lake.
+      if (w.rows - g.horizon > TORII.h - 2) w.sprite(TORII, Math.round(w.cols * (w.cols < 60 ? 0.06 : 0.12)), g.horizon + 1);
+      // A cherry branch reaching in from the top-left corner.
+      const L = Math.round(clamp(w.cols * 0.38, 10, 60));
+      const pts = [];
+      for (let i = 0; i <= L; i++) {
+        const x = i - 1;
+        const y = Math.round(1 + Math.pow(i / L, 1.6) * clamp(w.rows * 0.14, 2, 12));
+        pts.push([x, y]);
+        w.tile(x, y, '#6b4a3a', '#4e3428', '=');
+        if (i < L * 0.4) w.tile(x, y - 1, '#5e4033', '#4e3428', '=');
+        if (i > 4 && i % 7 === 3) for (let k = 1; k <= 3; k++) w.tile(x + k, y + k, '#6b4a3a', '#4e3428', '\\');
+      }
+      for (let i = 2; i < pts.length; i += 3) {
+        const [bx, by] = pts[i];
+        const r = 1.2 + hash(i, 0, 86) * 1.5;
+        for (let dy = -2; dy <= 2; dy++) {
+          for (let dx = -2; dx <= 2; dx++) {
+            if (Math.hypot(dx, dy) > r || hash(bx + dx, by + dy, 87) < 0.2) continue;
+            const c = SAKURA[(hash(bx + dx, by + dy, 88) * 4) | 0];
+            w.tile(bx + dx, by + dy + 1, c, '#e0789c', hash(bx + dx, by + dy, 89) < 0.3 ? '*' : '');
+          }
+        }
+      }
+    },
+    frame(w, dt) {
+      const s = w.s;
+      const g = fujiGeo(w);
+      const t = w.t;
       for (const b of s.birds) {
-        b.x -= b.v * dt;
-        if (b.x < -2) {
-          b.x = w.cols + rnd(1, 10);
-          b.y = rnd(2, g.horizon * 0.5);
-        }
-        w.glyph(b.x, b.y + Math.sin(t * 1.3 + b.ph) * 0.6, Math.floor(t * 4 + b.ph) % 2 ? 'v' : '-', '#33475b', 0.85);
+        b.x += b.v * dt;
+        if (b.x > w.cols + 2) b.x = -2;
+        w.glyph(b.x, b.y + Math.sin(t * 1.2 + b.ph) * 0.5, Math.floor(t * 4 + b.ph) % 2 ? 'v' : '-', '#4a4f6b', 0.75);
       }
+      driftClouds(w, s.clouds, dt, 0.8);
+      ripples(w, g.horizon, '#eef6ff', 91, 0.5);
+      for (let i = 0; i < s.petals.length; i++) {
+        const p = s.petals[i];
+        p.x += (p.vx + Math.sin(t * 1.3 + p.ph) * 0.8) * dt;
+        p.y += p.vy * dt;
+        if (p.y > w.rows + 1 || p.x > w.cols + 1) s.petals[i] = petal(w, false);
+        if (p.big) w.tile(p.x, p.y, p.col, '#e0789c', '', 0.85);
+        else w.dot(p.x, p.y, p.col, 0.9, 0.4);
+      }
+    },
+  });
 
-      // Water: drifting ripples and the sun's glittering path.
-      const tick = Math.floor(t * 4);
-      const sx = Math.round(w.cols * 0.82);
-      for (let y = g.horizon; y < w.rows; y++) {
-        const d = y - g.horizon;
-        const dir = y % 2 ? 1 : -1;
+  /* --------------------------------------------- Tà Xùa: clouds & flowers */
+
+  const TAXUA_FLOWERS = ['#ff7eb6', '#e05ac0', '#b57bff', '#ffffff', '#ffc1e0', '#d68cff'];
+
+  function taxuaGeo(w) {
+    const sea = Math.round(w.rows * 0.5);
+    return { sea, seaH: Math.max(3, Math.round(w.rows * 0.16)) };
+  }
+  const fieldTop = (w, x) => Math.round(w.rows * 0.7 - (1 - x / w.cols) * w.rows * 0.12 + Math.sin(x * 0.09) * 1.2);
+
+  THEMES.push({
+    id: 'taxua',
+    name: 'Tà Xùa',
+    dark: false,
+    alias: ['ta xua', 'taxua', 'hoa', 'canh dong hoa', 'bien may', 'son la', 'tay bac', 'flowers'],
+    glyphs: '~.:',
+    bg(c, w, h) {
+      vgrad(c, w, h, ['#6fa8e2', '#b9d3ef', '#ffd9b0', '#ffc39a', '#f5eef2']);
+      rglow(c, w * 0.7, h * 0.48, Math.max(w, h) * 0.4, '#ffe6b0', 0.6);
+    },
+    init(w) {
+      const s = w.s;
+      const g = taxuaGeo(w);
+      s.butterflies = many(w, 700, 2, 8, () => ({ x: rnd(0, w.cols), y: rnd(g.sea + g.seaH, w.rows - 2), vx: rnd(-1.5, 1.5), vy: 0, ph: rnd(0, 6), col: pick(['#ffd23f', '#ffffff', '#ff9ad5', '#9fd8ff']) }));
+      s.peaks = many(w, 500, 3, 9, () => ({ x: rnd(0, w.cols), h: rnd(w.rows * 0.08, w.rows * 0.2), slope: rnd(0.5, 1.1) }));
+      s.clouds = many(w, 1400, 1, 4, () => {
+        const c = cloud(w, true, CLOUD_DAY);
+        c.y = rnd(-1, g.sea * 0.4);
+        c.v *= 0.3;
+        return c;
+      });
+    },
+    under(w) {
+      const g = taxuaGeo(w);
+      // Ridges rising above the sea of clouds: a far hazy one and a sharp near spine.
+      for (let x = 0; x < w.cols; x++) {
+        const far = Math.round(w.rows * 0.1 + Math.sin(x * 0.05 + 2) * w.rows * 0.05 + Math.sin(x * 0.17) * 1.5);
+        for (let k = 0; k < far; k++) w.tile(x, g.sea + 1 - k, '#a9b7d8', '#97a6ca', w.ch(x, k, 101), 0.85);
+      }
+      // Near peaks: steep, sharp-crested ridges.
+      for (let x = 0; x < w.cols; x++) {
+        let near = 0;
+        for (const p of w.s.peaks) near = Math.max(near, p.h - Math.abs(x + 0.5 - p.x) * p.slope + (hash(x, 0, 102) - 0.5));
+        near = Math.round(near);
+        for (let k = 0; k < near; k++) w.tile(x, g.sea + 2 - k, k >= near - 1 ? '#7d93a8' : '#5f7398', '#4e6185', w.ch(x, k, 103));
+      }
+      // The meadow under the flowers.
+      for (let x = 0; x < w.cols; x++) for (let y = fieldTop(w, x); y < w.rows; y++) w.tile(x, y, '#7fae5c', '#669447', w.ch(x, y, 104));
+    },
+    frame(w, dt) {
+      const s = w.s;
+      const g = taxuaGeo(w);
+      const t = w.t;
+      driftClouds(w, s.clouds, dt, 0.8);
+      // The sea of clouds: two slow wave fields, thinning toward the top.
+      for (let y = g.sea - 1; y < g.sea + g.seaH + 3; y++) {
+        const f = (y - (g.sea - 1)) / (g.seaH + 3);
+        const thr = 0.35 - f * 1.8;
         for (let x = 0; x < w.cols; x++) {
-          if (hash(Math.floor(x + t * 0.8 * dir), y, 41) < 0.08) w.glyph(x, y, '~', '#e6f6fb', 0.55);
-        }
-        const spread = 1 + d * 0.8;
-        for (let x = Math.floor(sx - spread); x <= sx + spread; x++) {
-          if (hash(x, y, tick) < 0.3) w.tile(x, y, '#fff0b8', '#f0d27a', '~', 0.65 - d * 0.03);
+          const n = (Math.sin((x + t * 0.9) * 0.16 + y * 0.8) + Math.sin((x - t * 0.5) * 0.07 + y * 1.3)) * 0.5 + (hash(Math.floor(x + t * 0.7), y, 105) - 0.5) * 0.5;
+          if (n > thr) w.tile(x, y, n > thr + 0.4 ? '#ffffff' : '#f3eef6', '#d9d6e6', n > thr + 0.6 ? '~' : '', 0.75 + f * 0.25);
         }
       }
-
-      // Flagpole with a gold finial and a stone base.
-      for (let y = g.top - 1; y <= g.horizon + 1; y++) w.tile(g.px, y, '#ece6d8', '#bdb5a3', '|');
-      w.tile(g.px, g.top - 2, '#ffd34d', '#c99a1c', 'o');
-      for (let dx = -1; dx <= 1; dx++) w.tile(g.px + dx, g.horizon + 2, '#8d99a6', '#6d7884', '=');
-
-      // The flag: each column rides a sine wave that grows from the pole to the
-      // free end, snapped to whole cells; the slope picks one of seven shades.
-      const A = Math.max(1, g.H * 0.14);
-      const k = (Math.PI * 2.2) / g.L;
-      for (let i = 0; i < g.L; i++) {
-        const f = Math.pow((i + 1) / g.L, 0.8);
-        const ph = i * k - t * 3.4;
-        const dy = Math.round((Math.sin(ph) + 0.18 * Math.sin(ph * 2.1 + 1)) * A * f);
-        const shade = clamp(Math.round(Math.cos(ph) * (0.6 + f) * 2), -3, 3) + 3;
-        const x = g.px + 1 + i;
-        for (let j = 0; j < g.H; j++) {
-          const star = s.mask[j] && s.mask[j][i];
-          const p = (star ? FLAG_YELLOW : FLAG_RED)[shade];
-          w.tile(x, g.top + j + dy, p[0], p[1], star ? '*' : w.ch(i, j, 34));
+      // Flowers sway as a gust passes over the field.
+      for (let x = 0; x < w.cols; x++) {
+        for (let y = fieldTop(w, x); y < w.rows; y++) {
+          const r = hash(x, y, 106);
+          if (r > 0.3) continue;
+          const gust = Math.sin(x * 0.25 - t * 2.2 + y * 0.4);
+          const col = TAXUA_FLOWERS[(r * 100) % TAXUA_FLOWERS.length | 0];
+          w.tile(x, y, col, '#7a3f6e', gust > 0.5 ? '*' : '+', 0.7 + 0.3 * Math.max(0, gust));
         }
+      }
+      for (const b of s.butterflies) {
+        b.vx += (Math.random() - 0.5) * 2 * dt;
+        b.vx = clamp(b.vx, -2, 2);
+        b.x += b.vx * dt;
+        if (b.x < 0 || b.x > w.cols) b.vx = -b.vx;
+        b.x = clamp(b.x, 0, w.cols);
+        w.tile(b.x, b.y + Math.sin(t * 2 + b.ph) * 0.8, null, b.col, Math.floor(t * 6 + b.ph) % 2 ? 'W' : 'v');
       }
     },
   });
@@ -1155,13 +903,13 @@
   /* --------------------------------------------------------------- settings */
 
   const KEY = 'claude-themes:v1';
-  const cfg = { theme: 'cloud', veil: 0.2, glass: 0.72, motion: true, button: true };
+  const cfg = { theme: 'fuji', veil: 0.2, glass: 0.72, motion: true, button: true };
   try {
     Object.assign(cfg, JSON.parse(localStorage.getItem(KEY) || '{}'));
   } catch (e) {
     /* storage blocked: keep defaults */
   }
-  if (!ITEMS.includes(cfg.theme)) cfg.theme = 'cloud';
+  if (!ITEMS.includes(cfg.theme)) cfg.theme = 'fuji';
   const save = () => {
     try {
       localStorage.setItem(KEY, JSON.stringify(cfg));
@@ -1241,13 +989,14 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
       const s = new CSSStyleSheet();
       s.replaceSync(css);
       target.adoptedStyleSheets = [...target.adoptedStyleSheets, s];
-      return;
+      return () => (target.adoptedStyleSheets = target.adoptedStyleSheets.filter((x) => x !== s));
     } catch (e) {
       /* older browser: fall back to a <style> element */
     }
     const el = document.createElement('style');
     el.textContent = css;
     (target === document ? document.head || document.documentElement : target).appendChild(el);
+    return () => el.remove();
   }
 
   /* ---------------------------------------------------- background scanner */
@@ -1487,7 +1236,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
       canvas.setAttribute('aria-hidden', 'true');
       world = new World(canvas);
       if (window.ResizeObserver) new ResizeObserver(onResize).observe(canvas);
-      addEventListener('resize', onResize);
+      addEventListener('resize', onResize, on);
     }
     root.appendChild(canvas);
   }
@@ -1541,7 +1290,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
     raf = 0;
   }
 
-  document.addEventListener('visibilitychange', () => (document.hidden ? stopLoop() : startLoop()));
+  document.addEventListener('visibilitychange', () => (document.hidden ? stopLoop() : startLoop()), on);
 
   function applyTheme(id) {
     const th = byId(id);
@@ -1585,7 +1334,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
     return el;
   }
 
-  const FAB_COLORS = ['#86c3f2', '#ffffff', '#d97757', '#34b6c4', '#ff8fc8', '#d9ff6e', '#b49cff', '#fff2c7', '#ff7b2e'];
+  const FAB_COLORS = ['#ff9ec4', '#ffffff', '#ff5a5a', '#ffd93d', '#62cf5c', '#4aa8ff', '#a55cf0', '#ff5fa2', '#7f92c9'];
 
   let host = null;
   let fab = null;
@@ -1856,7 +1605,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
         closePicker(false);
       }
     },
-    true,
+    onCap,
   );
 
   addEventListener(
@@ -1891,7 +1640,7 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
         closePicker(false);
       }
     },
-    true,
+    onCap,
   );
 
   document.addEventListener(
@@ -1899,16 +1648,17 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
     (e) => {
       if (open && !e.composedPath().includes(host) && !(fromCmd && e.composedPath().includes(editor))) closePicker(false);
     },
-    true,
+    onCap,
   );
 
-  addEventListener('resize', () => open && place());
-  if (window.visualViewport) visualViewport.addEventListener('resize', () => open && place());
-  reduce.addEventListener && reduce.addEventListener('change', () => (running() ? startLoop() : (stopLoop(), paint(0))));
+  addEventListener('resize', () => open && place(), on);
+  if (window.visualViewport) visualViewport.addEventListener('resize', () => open && place(), on);
+  reduce.addEventListener && reduce.addEventListener('change', () => (running() ? startLoop() : (stopLoop(), paint(0))), on);
 
   /* ------------------------------------------------------------------- boot */
 
-  window.__claudeThemes = {
+  let unsheet = null;
+  const api = {
     themes: ITEMS.slice(),
     get current() {
       return cfg.theme;
@@ -1921,14 +1671,27 @@ html[data-pxt-on] canvas[data-pxt-ui="bg"] { display: block !important; }
     open: () => openPicker(null, false),
     close: () => closePicker(true),
     command: runCommand,
+    version: VERSION,
+    // Stops everything and puts the page back, so a newer copy can take over.
+    destroy() {
+      life.abort();
+      stopLoop();
+      stopScan();
+      root.removeAttribute('data-pxt-on');
+      if (canvas) canvas.remove();
+      if (host) host.remove();
+      if (unsheet) unsheet();
+      if (window.__claudeThemes === api) delete window.__claudeThemes;
+    },
   };
+  window.__claudeThemes = api;
 
   function boot() {
     if (!document.body) {
       setTimeout(boot, 50);
       return;
     }
-    sheet(PAGE_CSS, document);
+    unsheet = sheet(PAGE_CSS, document);
     buildUI();
     applyTheme(cfg.theme);
     say('✅ Claude Themes đã chạy. Bấm Alt+T (hoặc nút ô vuông màu ở cạnh phải) để chọn theme.');

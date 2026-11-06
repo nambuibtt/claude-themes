@@ -118,7 +118,7 @@ Mở bảng chọn bằng nút ô vuông nhiều màu ở cạnh phải, bằng 
 | **Nút nổi** | Ẩn / hiện nút ô vuông |
 | **Tắt** | Về giao diện gốc |
 
-Theme tối (Lotus Koi, Deep Glow, Night Forest, Starry Night, Terminal Glow) hợp giao diện Dark. Theme sáng (Blue Sky, Turtle Bay, Paper Fleet, Việt Nam) hợp giao diện Light.
+Theme tối (Tháp Namsan) hợp giao diện Dark. Theme sáng (Hải Ly Hồng, Thỏ Bảy Màu, Núi Phú Sĩ, Tà Xùa) hợp giao diện Light.
 
 ### 3.7. Dùng cùng plugin `/desk`
 
@@ -144,9 +144,8 @@ Trong terminal: `claude plugin install themes-for-claude --marketplace nambuibtt
 | Lệnh | Tác dụng |
 |---|---|
 | `/desk` | Mở bảng chọn |
-| `/desk koi` | Đổi sang Lotus Koi (tương tự `code`, `cloud`, `lagoon`, `jelly`, `boats`, `fireflies`, `moon`, `vn`) |
-| `/desk co`, `/desk viet nam` | Theme Việt Nam |
-| `/desk trang`, `/desk sua`, `/desk may` | Đổi bằng tên tiếng Việt không dấu |
+| `/desk fuji` | Đổi sang Núi Phú Sĩ (tương tự `beaver`, `bunny`, `namsan`, `taxua`) |
+| `/desk hai ly`, `/desk tho`, `/desk ta xua` | Đổi bằng tên tiếng Việt không dấu |
 | `/desk side` | Mở khung cảnh bên cạnh |
 | `/desk tint` | Bật / tắt viền màu tin nhắn |
 | `/desk off` | Tắt |
